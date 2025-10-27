@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 import HomeCard from "@/components/home-card";
@@ -15,6 +16,9 @@ export default function HomePage(): ReactNode {
       }}
     >
       <HomeCard />
+      <Link href="/departments/safety" passHref>
+        Safety Page
+      </Link>
     </Box>
   );
 }
