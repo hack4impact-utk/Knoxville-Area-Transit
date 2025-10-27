@@ -1,10 +1,10 @@
 import { JSX } from "react";
 
 export default function Safety(): JSX.Element {
-    return (
+  return (
     <div>
-        <h1>Safety</h1>
-        <p>This is the safety page here.</p>
+      <h1>Safety</h1>
+      <p>This is the safety page here.</p>
     </div>
- );
+  );
 }
