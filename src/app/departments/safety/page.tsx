@@ -1,4 +1,6 @@
-export default function Safety() {
+import { JSX } from "react";
+
+export default function Safety(): JSX.Element {
     return (
         <div>
             <h1>Safety</h1>
