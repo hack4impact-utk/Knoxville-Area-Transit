@@ -1,7 +1,7 @@
-import React from "react";
 import Link from "next/link";
+import { JSX } from "react";
 
-export default function Home(): React.JSX.Element {
+export default function Home(): JSX.Element {
   return (
     <main className="p-6">
       <h1 className="text-3xl font-bold mb-4">
