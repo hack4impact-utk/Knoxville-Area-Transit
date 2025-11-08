@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import {
   Box,
   Button,
@@ -14,6 +12,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 
 const isNonNegative = (val: string): boolean =>
@@ -44,7 +44,8 @@ export default function ChartersPage(): React.ReactElement {
     e.preventDefault();
     if (!isFormValid) return;
 
-    const formData = {
+    // Form data is logged for future backend integration
+    const _formData = {
       reportingMonth: reportingMonth ? reportingMonth.format("YYYY-MM") : null,
       eventType,
       eventDate: eventDate ? eventDate.format("YYYY-MM-DD") : null,
