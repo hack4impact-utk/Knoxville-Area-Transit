@@ -1,22 +1,25 @@
 "use client";
 
 import React, { useState } from "react";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import {
   Box,
-  TextField,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
   Button,
-  Typography,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
-export default function ChartersPage() {
+const isNonNegative = (val: string): boolean =>
+  val === "" || (!Number.isNaN(Number(val)) && Number(val) >= 0);
+
+export default function ChartersPage(): React.ReactElement {
   const [reportingMonth, setReportingMonth] = useState<Dayjs | null>(null);
   const [eventType, setEventType] = useState("");
   const [eventDate, setEventDate] = useState<Dayjs | null>(null);
@@ -26,9 +29,6 @@ export default function ChartersPage() {
   const [driverAssignments, setDriverAssignments] = useState("");
   const [revenueTotal, setRevenueTotal] = useState("");
   const [serviceTotal, setServiceTotal] = useState("");
-
-  const isNonNegative = (val: string) =>
-    val === "" || (!isNaN(Number(val)) && Number(val) >= 0);
 
   const isEventDateRequired = eventType !== "" && !eventDate;
 
@@ -40,7 +40,7 @@ export default function ChartersPage() {
     isNonNegative(revenueTotal) &&
     isNonNegative(serviceTotal);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     if (!isFormValid) return;
 
@@ -56,7 +56,6 @@ export default function ChartersPage() {
       serviceTotal: Number(serviceTotal),
     };
 
-    console.log("Submitted:", formData);
     alert("Form data logged to console.");
   };
 
@@ -75,7 +74,7 @@ export default function ChartersPage() {
                   views={["year", "month"]}
                   label="Reporting Month"
                   value={reportingMonth}
-                  onChange={(newValue) => setReportingMonth(newValue)}
+                  onChange={(newValue): void => setReportingMonth(newValue)}
                   slotProps={{
                     textField: { fullWidth: true },
                   }}
@@ -89,7 +88,7 @@ export default function ChartersPage() {
                     labelId="event-type-label"
                     value={eventType}
                     label="Event Type"
-                    onChange={(e) => setEventType(e.target.value)}
+                    onChange={(e): void => setEventType(e.target.value)}
                   >
                     <MenuItem value="UT Football">UT Football</MenuItem>
                     <MenuItem value="Basketball">Basketball</MenuItem>
@@ -104,7 +103,7 @@ export default function ChartersPage() {
                 <DatePicker
                   label="Event Date"
                   value={eventDate}
-                  onChange={(newValue) => setEventDate(newValue)}
+                  onChange={(newValue): void => setEventDate(newValue)}
                   slotProps={{
                     textField: {
                       fullWidth: true,
@@ -124,10 +123,12 @@ export default function ChartersPage() {
                   label="Passenger Count"
                   type="number"
                   value={passengerCount}
-                  onChange={(e) => setPassengerCount(e.target.value)}
-                  error={!isNonNegative(passengerCount)}
+                  onChange={(e): void => setPassengerCount(e.target.value)}
+                  error={
+                    passengerCount !== "" && !isNonNegative(passengerCount)
+                  }
                   helperText={
-                    !isNonNegative(passengerCount)
+                    passengerCount !== "" && !isNonNegative(passengerCount)
                       ? "Must be a non-negative number."
                       : ""
                   }
@@ -140,10 +141,10 @@ export default function ChartersPage() {
                   label="Vehicle Hours"
                   type="number"
                   value={vehicleHours}
-                  onChange={(e) => setVehicleHours(e.target.value)}
-                  error={!isNonNegative(vehicleHours)}
+                  onChange={(e): void => setVehicleHours(e.target.value)}
+                  error={vehicleHours !== "" && !isNonNegative(vehicleHours)}
                   helperText={
-                    !isNonNegative(vehicleHours)
+                    vehicleHours !== "" && !isNonNegative(vehicleHours)
                       ? "Must be a non-negative number."
                       : ""
                   }
@@ -156,10 +157,10 @@ export default function ChartersPage() {
                   label="Vehicle Miles"
                   type="number"
                   value={vehicleMiles}
-                  onChange={(e) => setVehicleMiles(e.target.value)}
-                  error={!isNonNegative(vehicleMiles)}
+                  onChange={(e): void => setVehicleMiles(e.target.value)}
+                  error={vehicleMiles !== "" && !isNonNegative(vehicleMiles)}
                   helperText={
-                    !isNonNegative(vehicleMiles)
+                    vehicleMiles !== "" && !isNonNegative(vehicleMiles)
                       ? "Must be a non-negative number."
                       : ""
                   }
@@ -173,7 +174,7 @@ export default function ChartersPage() {
               multiline
               minRows={3}
               value={driverAssignments}
-              onChange={(e) => setDriverAssignments(e.target.value)}
+              onChange={(e): void => setDriverAssignments(e.target.value)}
               fullWidth
             />
 
@@ -183,10 +184,10 @@ export default function ChartersPage() {
                   label="Revenue Total"
                   type="number"
                   value={revenueTotal}
-                  onChange={(e) => setRevenueTotal(e.target.value)}
-                  error={!isNonNegative(revenueTotal)}
+                  onChange={(e): void => setRevenueTotal(e.target.value)}
+                  error={revenueTotal !== "" && !isNonNegative(revenueTotal)}
                   helperText={
-                    !isNonNegative(revenueTotal)
+                    revenueTotal !== "" && !isNonNegative(revenueTotal)
                       ? "Must be a non-negative number."
                       : ""
                   }
@@ -199,10 +200,10 @@ export default function ChartersPage() {
                   label="Service Total"
                   type="number"
                   value={serviceTotal}
-                  onChange={(e) => setServiceTotal(e.target.value)}
-                  error={!isNonNegative(serviceTotal)}
+                  onChange={(e): void => setServiceTotal(e.target.value)}
+                  error={serviceTotal !== "" && !isNonNegative(serviceTotal)}
                   helperText={
-                    !isNonNegative(serviceTotal)
+                    serviceTotal !== "" && !isNonNegative(serviceTotal)
                       ? "Must be a non-negative number."
                       : ""
                   }
