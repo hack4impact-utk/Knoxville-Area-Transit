@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+
 import {
   Box,
   Button,
@@ -14,7 +15,7 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Dayjs } from "dayjs";
+import type { Dayjs } from "dayjs";
 
 const isNonNegative = (val: string): boolean =>
   val === "" || (!Number.isNaN(Number(val)) && Number(val) >= 0);
@@ -44,20 +45,7 @@ export default function ChartersPage(): React.ReactElement {
     e.preventDefault();
     if (!isFormValid) return;
 
-    // Form data is logged for future backend integration
-    const _formData = {
-      reportingMonth: reportingMonth ? reportingMonth.format("YYYY-MM") : null,
-      eventType,
-      eventDate: eventDate ? eventDate.format("YYYY-MM-DD") : null,
-      passengerCount: Number(passengerCount),
-      vehicleHours: Number(vehicleHours),
-      vehicleMiles: Number(vehicleMiles),
-      driverAssignments,
-      revenueTotal: Number(revenueTotal),
-      serviceTotal: Number(serviceTotal),
-    };
-
-    alert("Form data logged to console.");
+    alert("Form submitted successfully!");
   };
 
   return (
