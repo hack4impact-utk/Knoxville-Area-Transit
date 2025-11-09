@@ -1,12 +1,11 @@
-import React from "react";
 import Link from "next/link";
+import type { JSX } from "react";
+import React from "react";
 
-export default function Lift() {
+export default function Lift(): JSX.Element {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-6">
-      <h1 className="text-3xl font-bold text-blue-600 mb-4">
-        Lift Dashboard
-      </h1>
+      <h1 className="text-3xl font-bold text-blue-600 mb-4">Lift Dashboard</h1>
       <p className="text-lg text-gray-700 mb-6">
         This page will display Lift KPIs and forms in the future.
       </p>
