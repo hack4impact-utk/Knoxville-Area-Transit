@@ -7,7 +7,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import type { ReactElement } from "react";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -18,7 +18,7 @@ const navLinks = [
   { label: "HR/Operations", href: "/departments/hr" },
 ];
 
-export default function AppNavbar(): JSX.Element {
+export default function AppNavbar(): ReactElement {
   const pathname = usePathname();
 
   return (
