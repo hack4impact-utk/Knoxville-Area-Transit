@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
 import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -18,26 +18,20 @@ const navLinks = [
   { label: "HR/Operations", href: "/departments/hr" },
 ];
 
-export default function AppNavbar() {
+export default function AppNavbar(): JSX.Element {
   const pathname = usePathname();
 
   return (
-    <AppBar
-      position="sticky"        // or "static" if you prefer
-      color="primary"
-      enableColorOnDark        // works nicely if you switch to dark theme later
-    >
+    <AppBar position="sticky" color="primary" enableColorOnDark>
       <Toolbar>
-        {/* Left: project name / logo */}
         <Typography
-          variant="h6"
           component="div"
           sx={{ flexGrow: 1, fontWeight: 500 }}
+          variant="h6"
         >
           Transit Ops Dashboard
         </Typography>
 
-        {/* Right: navigation links */}
         <Box sx={{ display: "flex", gap: 2 }}>
           {navLinks.map((link) => {
             const isActive =
