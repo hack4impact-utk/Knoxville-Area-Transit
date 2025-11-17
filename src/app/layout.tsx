@@ -8,6 +8,7 @@ import { ReactNode } from "react";
 import NextAuthProvider from "@/providers/next-auth-provider";
 import NotistackProvider from "@/providers/notistack-provider";
 import theme from "@/styles/theme";
+import AppNavbar from "@/components/AppNavbar"; 
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: RootLayoutProps): ReactNode {
             <NotistackProvider>
               <NextAuthProvider>
                 <CssBaseline />
+                <AppNavbar />   
                 {children}
               </NextAuthProvider>
             </NotistackProvider>
