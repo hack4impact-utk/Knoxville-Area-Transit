@@ -1,5 +1,5 @@
-import React, { FC } from "react";
 import Link from "next/link";
+import React, { FC } from "react";
 
 const HR: FC = () => (
   <div style={{ fontFamily: "sans-serif", padding: "1rem" }}>

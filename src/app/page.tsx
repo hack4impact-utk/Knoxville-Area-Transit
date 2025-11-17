@@ -16,6 +16,15 @@ export default function HomePage(): ReactNode {
       }}
     >
       <HomeCard />
+      <Link href="/departments/safety" passHref>
+        Safety Page
+      </Link>
+      <Link href="/departments/charters" passHref>
+        Charter Page
+      </Link>
+      <Link href="/departments/ridership" passHref>
+        Ridership & System Performance Page
+      </Link>
     </Box>
   );
 }

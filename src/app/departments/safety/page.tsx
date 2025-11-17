@@ -13,6 +13,8 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useState } from "react";
 import { Dayjs } from "dayjs";
+import Link from "next/link";
+import { JSX } from "react";
 
 export default function Safety(): JSX.Element {
   const [reportingMonth, setReportingMonth] = useState<Dayjs | null>(null);
@@ -99,5 +101,10 @@ export default function Safety(): JSX.Element {
         </Box>
       </Box>
     </LocalizationProvider>
+    <div>
+      <h1>Safety</h1>
+      <p>This is the safety page here.</p>
+      <Link href="/">Home</Link>
+    </div>
   );
 }
