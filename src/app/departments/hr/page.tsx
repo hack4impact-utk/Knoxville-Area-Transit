@@ -63,6 +63,8 @@ export default function HR() {
         onChange={(e) => handle("training", e.target.value)}
         style={{ display: "block", margin: "0.5rem 0" }}
       />
+import Link from "next/link";
+import React, { FC } from "react";
 
       <p>
         <Link href="/">← Home</Link>
