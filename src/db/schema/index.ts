@@ -87,4 +87,48 @@ import {
       .defaultNow()
       .notNull(),
   });
+
+  /* ======================
+   LIFT METRICS TABLE
+   ====================== */
+export const liftMetrics = pgTable("lift_metrics", {
+  id: serial("id").primaryKey(),
+
+  reportingMonth: date("reporting_month").notNull(),
+
+  tripsDenied: integer("trips_denied"),
+  noShows: integer("no_shows"),
+  tripsScheduled: integer("trips_scheduled"),
+  totalPassengers: integer("total_passengers"),
+
+  revenueVehicleMiles: numeric("revenue_vehicle_miles"),
+  revenueVehicleHours: numeric("revenue_vehicle_hours"),
+
+  avgCostPerTrip: numeric("avg_cost_per_trip"),
+  passengerPerMile: numeric("passenger_per_mile"),
+  passengerPerHour: numeric("passenger_per_hour"),
+  otpPercent: numeric("otp_percent"),
+
+  avgWeekdayRidership: numeric("avg_weekday_ridership"),
+  avgSaturdayRidership: numeric("avg_saturday_ridership"),
+  avgSundayRidership: numeric("avg_sunday_ridership"),
+
+  totalWeekdayRidership: numeric("total_weekday_ridership"),
+  totalSaturdayRidership: numeric("total_saturday_ridership"),
+  totalSundayRidership: numeric("total_sunday_ridership"),
+
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
   
+/* ======================
+   RIDERSHIP METRICS TABLE
+   ====================== */
+export const ridershipMetrics = pgTable("ridership_metrics", {
+  id: serial("id").primaryKey(),
+  reportingMonth: date("reporting_month").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});
