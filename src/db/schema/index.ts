@@ -87,4 +87,28 @@ import {
       .defaultNow()
       .notNull(),
   });
+
+  /* ======================
+     MAINTENANCE METRICS TABLE
+     ====================== */
+  export const maintenanceMetrics = pgTable("maintenance_metrics", {
+    id: serial("id").primaryKey(),
+
+    reportingMonth: date("reporting_month").notNull(),
+
+    motorBusMajor: integer("motor_bus_major"),
+    motorBusOther: integer("motor_bus_other"),
+    liftMajor: integer("lift_major"),
+    liftOther: integer("lift_other"),
+
+    interruptions: integer("interruptions"),
+
+    diesel: numeric("diesel"),
+    cng: numeric("cng"),
+    electric: numeric("electric"),
+
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  });
   
