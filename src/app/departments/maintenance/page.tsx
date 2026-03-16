@@ -9,10 +9,11 @@ import {
   Paper,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import type { Dayjs } from "dayjs";
 
 export default function Maintenance() {
-  const [reportingMonth, setReportingMonth] = useState<Date | null>(new Date());
+  const [reportingMonth, setReportingMonth] = useState<Dayjs | null>(null);
   const [values, setValues] = useState({
     motorBusMajor: "",
     motorBusOther: "",
@@ -45,7 +46,7 @@ export default function Maintenance() {
           ← Back to Home
         </Link>
       </Box>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box p={4}>
           <Paper elevation={3} sx={{ p: 4 }}>
             <Typography variant="h5" gutterBottom>
@@ -58,7 +59,9 @@ export default function Maintenance() {
                 views={["year", "month"]}
                 label="Reporting Month"
                 value={reportingMonth}
-                onChange={(newValue) => setReportingMonth(newValue)}
+                onChange={(newValue) =>
+                  setReportingMonth(newValue as Dayjs | null)
+                }
                 slotProps={{ textField: { fullWidth: true } }}
               />
             </Box>
