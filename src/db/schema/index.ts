@@ -1,16 +1,17 @@
+/* eslint-disable prettier/prettier */
 // src/db/schema/index.ts
 
 import {
+    date,
     integer,
+    numeric,
     pgTable,
     primaryKey,
+    serial,
     text,
     timestamp,
-    numeric,
-    date,
-    serial,
-  } from "drizzle-orm/pg-core";
-  
+} from "drizzle-orm/pg-core";
+
   /* ======================
      USERS TABLE
      ====================== */
@@ -86,5 +87,32 @@ import {
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
+  });
+
+  /* ======================
+     MAINTENANCE METRICS TABLE
+     ====================== */
+  export const maintenanceMetrics = pgTable("maintenance_metrics", {
+    id: serial("id").primaryKey(),
+    reportingMonth: date("reporting_month").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  });
+
+  /* ======================
+      FINANCES TABLE
+     ====================== */
+  export const finance_metrics = pgTable("finance_metrics", {
+    id: serial("id").primaryKey(),
+    monthlyReportId: integer("monthly_report_id")
+    .references(() => MonthlyDepartmentReport.id)
+    .unique(),
+    fixedRouteRevenue: numeric("fixed_route_revenue").notNull(),
+    liftRevenue: numeric("lift_revenue").notNull(),
+    footballShuttleRevenue: numeric("football_shuttle_revenue").notNull(),
+    boydsSoccerRevenue: numeric("boyds_soccer_revenue").notNull(),
+    otherCharterRevenue: numeric("other_charter_revenue").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   });
   
