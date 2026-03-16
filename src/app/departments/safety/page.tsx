@@ -62,7 +62,7 @@ export default function Safety(): JSX.Element {
                 label="Reporting Month"
                 views={["year", "month"]}
                 value={reportingMonth}
-                onChange={(newValue) => setReportingMonth(newValue)}
+                onChange={(newValue) => setReportingMonth(newValue as Dayjs | null)}
                 slotProps={{
                   textField: {
                     fullWidth: true,
@@ -74,7 +74,7 @@ export default function Safety(): JSX.Element {
 
             {/* Preventable Accidents */}
             <Grid container spacing={3}>
-              <Grid container item xs={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   label="Preventable Accidents — Main Line"
                   type="number"
@@ -93,7 +93,7 @@ export default function Safety(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   label="Preventable Accidents — Lift"
                   type="number"
@@ -115,7 +115,7 @@ export default function Safety(): JSX.Element {
 
             {/* Collisions */}
             <Grid container spacing={3}>
-              <Grid container item xs={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   label="Collisions — Main Line"
                   type="number"
@@ -134,7 +134,7 @@ export default function Safety(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   label="Collisions — Lift"
                   type="number"
@@ -156,7 +156,7 @@ export default function Safety(): JSX.Element {
 
             {/* Notes */}
             <Grid container spacing={3}>
-              <Grid container item xs={12}>
+              <Grid item xs={12}>
                 <TextField
                   label="Notes"
                   value={notes}

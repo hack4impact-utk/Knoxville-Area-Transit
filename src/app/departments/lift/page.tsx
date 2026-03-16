@@ -97,7 +97,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Trips + Passengers */}
             <Grid container spacing={3}>
-              <Grid container item xs={12} md={3}>
+              <Grid item xs={12} md={3}>
                 <TextField
                   label="Trips Denied"
                   type="number"
@@ -116,7 +116,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={3}>
+              <Grid item xs={12} md={3}>
                 <TextField
                   label="No-Shows"
                   type="number"
@@ -135,7 +135,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={3}>
+              <Grid item xs={12} md={3}>
                 <TextField
                   label="Trips Scheduled"
                   type="number"
@@ -176,7 +176,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Revenue Miles / Hours */}
             <Grid container spacing={3}>
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Revenue Vehicle Miles"
                   type="number"
@@ -195,7 +195,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Revenue Vehicle Hours"
                   type="number"
@@ -214,7 +214,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Average Cost per Trip"
                   type="number"
@@ -236,7 +236,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Passenger per Mile / Hour + OTP */}
             <Grid container spacing={3}>
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Passengers per Mile"
                   type="number"
@@ -255,7 +255,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Passengers per Hour"
                   type="number"
@@ -274,7 +274,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="On-Time Performance %"
                   type="number"
@@ -296,7 +296,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Average Ridership (Weekday / Sat / Sun) */}
             <Grid container spacing={3}>
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Avg. Weekday Ridership"
                   type="number"
@@ -315,7 +315,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Avg. Saturday Ridership"
                   type="number"
@@ -337,7 +337,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Avg. Sunday Ridership"
                   type="number"
@@ -359,7 +359,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Total Ridership (Weekday / Sat / Sun) */}
             <Grid container spacing={3}>
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Total Weekday Ridership"
                   type="number"
@@ -381,7 +381,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Total Saturday Ridership"
                   type="number"
@@ -403,7 +403,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid container item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   label="Total Sunday Ridership"
                   type="number"
