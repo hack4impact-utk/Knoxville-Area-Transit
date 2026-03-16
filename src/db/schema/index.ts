@@ -88,3 +88,13 @@ import {
       .notNull(),
   });
   
+  /* ======================
+   RIDERSHIP METRICS TABLE
+   ====================== */
+export const ridershipMetrics = pgTable("ridership_metrics", {
+  id: serial("id").primaryKey(),
+  reportingMonth: date("reporting_month").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+});

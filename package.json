@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "check": "concurrently --kill-others-on-fail 'pnpm lint' 'tsc --noEmit'"
+    "check": "concurrently --kill-others-on-fail 'next lint' 'tsc --noEmit'"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.10.0",
