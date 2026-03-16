@@ -1,8 +1,5 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import type { JSX } from "react";
-
 import {
   Box,
   Button,
@@ -15,9 +12,11 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import type { Dayjs } from "dayjs";
+import type { JSX } from "react";
+import React, { useEffect, useState } from "react";
 
 const isNonNegative = (value: string): boolean => {
   if (value === "") return true;
@@ -32,6 +31,14 @@ const handleNumericChange = (
   if (value === "" || /^\d*\.?\d*$/.test(value)) {
     setter(value);
   }
+};
+
+type SavedCharterEvent = {
+  id: number;
+  eventType: string;
+  passengerCount: number | null;
+  vehicleHours: number | null;
+  vehicleMiles: number | null;
 };
 
 export default function ChartersPage(): JSX.Element {
@@ -50,7 +57,7 @@ export default function ChartersPage(): JSX.Element {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const [savedEvents, setSavedEvents] = useState<any[]>([]);
+  const [savedEvents, setSavedEvents] = useState<SavedCharterEvent[]>([]);
 
   const isEventDateRequired = eventType !== "";
   const isEventDateValid = isEventDateRequired ? eventDate !== null : true;
@@ -71,14 +78,14 @@ export default function ChartersPage(): JSX.Element {
     isRevenueTotalValid &&
     isServiceTotalValid;
 
-  async function loadEvents() {
+  async function loadEvents(): Promise<void> {
     try {
       const res = await fetch("/api/charters");
       if (!res.ok) return;
       const data = await res.json();
       setSavedEvents(data);
-    } catch (err) {
-      console.error("[Charters] failed to load events", err);
+    } catch (error) {
+      console.error("[Charters] failed to load events", error);
     }
   }
 
@@ -86,13 +93,10 @@ export default function ChartersPage(): JSX.Element {
     void loadEvents();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
-    console.log("[Charters] submit clicked");
-
     if (!isFormValid) {
-      console.log("[Charters] form invalid");
       return;
     }
 
@@ -112,8 +116,6 @@ export default function ChartersPage(): JSX.Element {
       serviceTotal: serviceTotal ? Number(serviceTotal) : null,
     };
 
-    console.log("[Charters] payload", payload);
-
     try {
       const res = await fetch("/api/charters", {
         method: "POST",
@@ -121,10 +123,7 @@ export default function ChartersPage(): JSX.Element {
         body: JSON.stringify(payload),
       });
 
-      console.log("[Charters] response status", res.status);
-
       const text = await res.text();
-      console.log("[Charters] response body", text);
 
       if (!res.ok) {
         setSubmitError(`Failed to save charter event: ${text}`);
@@ -137,8 +136,8 @@ export default function ChartersPage(): JSX.Element {
 
       // Refresh list of saved events for the demo
       void loadEvents();
-    } catch (err) {
-      console.error("[Charters] network or JS error", err);
+    } catch (error) {
+      console.error("[Charters] network or JS error", error);
       setSubmitError("Unexpected error while saving charter event.");
       alert("Unexpected error while saving charter event.");
     } finally {
@@ -162,12 +161,14 @@ export default function ChartersPage(): JSX.Element {
             <Stack spacing={4}>
               {/* Top row: Reporting Month, Event Type, Event Date */}
               <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <DatePicker
                     label="Reporting Month"
                     views={["year", "month"]}
                     value={reportingMonth}
-                    onChange={(newValue) => setReportingMonth(newValue)}
+                    onChange={(newValue) =>
+                      setReportingMonth(newValue as Dayjs | null)
+                    }
                     slotProps={{
                       textField: {
                         fullWidth: true,
@@ -177,7 +178,7 @@ export default function ChartersPage(): JSX.Element {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <FormControl fullWidth>
                     <InputLabel id="event-type-label">Event Type</InputLabel>
                     <Select
@@ -195,11 +196,13 @@ export default function ChartersPage(): JSX.Element {
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <DatePicker
                     label="Event Date"
                     value={eventDate}
-                    onChange={(newValue) => setEventDate(newValue)}
+                    onChange={(newValue) =>
+                      setEventDate(newValue as Dayjs | null)
+                    }
                     slotProps={{
                       textField: {
                         fullWidth: true,
@@ -216,7 +219,7 @@ export default function ChartersPage(): JSX.Element {
 
               {/* Numeric Fields: Passenger Count, Vehicle Hours, Vehicle Miles */}
               <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     label="Passenger Count"
                     type="number"
@@ -235,7 +238,7 @@ export default function ChartersPage(): JSX.Element {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     label="Vehicle Hours"
                     type="number"
@@ -254,7 +257,7 @@ export default function ChartersPage(): JSX.Element {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     label="Vehicle Miles"
                     type="number"
@@ -276,7 +279,7 @@ export default function ChartersPage(): JSX.Element {
 
               {/* Driver Assignments */}
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     label="Driver Assignments"
                     value={driverAssignments}
@@ -290,7 +293,7 @@ export default function ChartersPage(): JSX.Element {
 
               {/* Revenue & Service Totals */}
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <TextField
                     label="Revenue Total"
                     type="number"
@@ -309,7 +312,7 @@ export default function ChartersPage(): JSX.Element {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <TextField
                     label="Service Total"
                     type="number"
@@ -346,7 +349,11 @@ export default function ChartersPage(): JSX.Element {
                 )}
 
                 {submitSuccess && (
-                  <Typography color="success.main" variant="body2" sx={{ mt: 1 }}>
+                  <Typography
+                    color="success.main"
+                    variant="body2"
+                    sx={{ mt: 1 }}
+                  >
                     Saved successfully.
                   </Typography>
                 )}
@@ -361,12 +368,10 @@ export default function ChartersPage(): JSX.Element {
             </Typography>
 
             {savedEvents.length === 0 ? (
-              <Typography variant="body2">
-                No events saved yet.
-              </Typography>
+              <Typography variant="body2">No events saved yet.</Typography>
             ) : (
               <Box component="ul" sx={{ pl: 3 }}>
-                {savedEvents.map((evt: any) => (
+                {savedEvents.map((evt) => (
                   <li key={evt.id}>
                     {evt.eventType} — {evt.passengerCount ?? 0} passengers,{" "}
                     {evt.vehicleHours ?? 0} hours, {evt.vehicleMiles ?? 0} miles

@@ -1,18 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import React, { useState } from "react";
-import {
-  Box,
-  TextField,
-  Typography,
-  Paper,
-} from "@mui/material";
+import { Box, Paper, TextField, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import type { Dayjs } from "dayjs";
+import Link from "next/link";
+import type { JSX } from "react";
+import React, { useState } from "react";
 
-export default function Maintenance() {
+export default function Maintenance(): JSX.Element {
   const [reportingMonth, setReportingMonth] = useState<Dayjs | null>(null);
   const [values, setValues] = useState({
     motorBusMajor: "",
@@ -25,7 +21,7 @@ export default function Maintenance() {
     electric: "",
   });
 
-  const handleChange = (field: string, value: string) => {
+  const handleChange = (field: string, value: string): void => {
     if (/^\d*$/.test(value)) {
       setValues((prev) => ({ ...prev, [field]: value }));
     }
@@ -36,13 +32,11 @@ export default function Maintenance() {
       <Box sx={{ p: 4, mb: 4 }}>
         <h1 className="text-3xl font-bold">Maintenance page</h1>
         <p className="text-gray-700">
-          This is the page that will display Maintenance metrics and future inputs.
+          This is the page that will display Maintenance metrics and future
+          inputs.
         </p>
 
-        <Link
-          href="/"
-          className="text-blue-600 hover:underline block mt-8"
-        >
+        <Link href="/" className="text-blue-600 hover:underline block mt-8">
           ← Back to Home
         </Link>
       </Box>
@@ -146,7 +140,6 @@ export default function Maintenance() {
           </Paper>
         </Box>
       </LocalizationProvider>
-      
     </main>
   );
 }

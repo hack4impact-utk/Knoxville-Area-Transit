@@ -1,22 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import type { JSX } from "react";
-
-import {
-  Box,
-  Button,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import {
-  LocalizationProvider,
-  DatePicker,
-} from "@mui/x-date-pickers";
+import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import type { Dayjs } from "dayjs";
+import type { JSX } from "react";
+import React, { useState } from "react";
 
 const isNonNegative = (value: string): boolean => {
   if (value === "") return true;
@@ -60,8 +49,10 @@ export default function LiftPage(): JSX.Element {
   const [avgSaturdayRidership, setAvgSaturdayRidership] = useState<string>("");
   const [avgSundayRidership, setAvgSundayRidership] = useState<string>("");
 
-  const [totalWeekdayRidership, setTotalWeekdayRidership] = useState<string>("");
-  const [totalSaturdayRidership, setTotalSaturdayRidership] = useState<string>("");
+  const [totalWeekdayRidership, setTotalWeekdayRidership] =
+    useState<string>("");
+  const [totalSaturdayRidership, setTotalSaturdayRidership] =
+    useState<string>("");
   const [totalSundayRidership, setTotalSundayRidership] = useState<string>("");
 
   const [avgCostPerTrip, setAvgCostPerTrip] = useState<string>("");
@@ -85,7 +76,9 @@ export default function LiftPage(): JSX.Element {
                 label="Reporting Month"
                 views={["year", "month"]}
                 value={reportingMonth}
-                onChange={(newValue) => setReportingMonth(newValue)}
+                onChange={(newValue) =>
+                  setReportingMonth(newValue as Dayjs | null)
+                }
                 slotProps={{
                   textField: {
                     fullWidth: true,
@@ -97,7 +90,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Trips + Passengers */}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <TextField
                   label="Trips Denied"
                   type="number"
@@ -116,7 +109,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <TextField
                   label="No-Shows"
                   type="number"
@@ -135,7 +128,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <TextField
                   label="Trips Scheduled"
                   type="number"
@@ -154,7 +147,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={3}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <TextField
                   label="Total Passengers"
                   type="number"
@@ -176,7 +169,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Revenue Miles / Hours */}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Revenue Vehicle Miles"
                   type="number"
@@ -195,7 +188,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Revenue Vehicle Hours"
                   type="number"
@@ -214,7 +207,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Average Cost per Trip"
                   type="number"
@@ -236,7 +229,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Passenger per Mile / Hour + OTP */}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Passengers per Mile"
                   type="number"
@@ -255,7 +248,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Passengers per Hour"
                   type="number"
@@ -274,7 +267,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="On-Time Performance %"
                   type="number"
@@ -284,9 +277,7 @@ export default function LiftPage(): JSX.Element {
                   }
                   error={!isPercent(otpPercent)}
                   helperText={
-                    isPercent(otpPercent)
-                      ? ""
-                      : "Must be between 0 and 100."
+                    isPercent(otpPercent) ? "" : "Must be between 0 and 100."
                   }
                   fullWidth
                   inputProps={{ min: 0, max: 100 }}
@@ -296,7 +287,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Average Ridership (Weekday / Sat / Sun) */}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Avg. Weekday Ridership"
                   type="number"
@@ -315,16 +306,13 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Avg. Saturday Ridership"
                   type="number"
                   value={avgSaturdayRidership}
                   onChange={(e) =>
-                    handleNumericChange(
-                      e.target.value,
-                      setAvgSaturdayRidership,
-                    )
+                    handleNumericChange(e.target.value, setAvgSaturdayRidership)
                   }
                   error={!isNonNegative(avgSaturdayRidership)}
                   helperText={
@@ -337,7 +325,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Avg. Sunday Ridership"
                   type="number"
@@ -359,7 +347,7 @@ export default function LiftPage(): JSX.Element {
 
             {/* Total Ridership (Weekday / Sat / Sun) */}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Total Weekday Ridership"
                   type="number"
@@ -381,7 +369,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Total Saturday Ridership"
                   type="number"
@@ -403,7 +391,7 @@ export default function LiftPage(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   label="Total Sunday Ridership"
                   type="number"

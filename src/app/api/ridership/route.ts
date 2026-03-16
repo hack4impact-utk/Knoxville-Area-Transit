@@ -1,5 +1,6 @@
 // src/app/api/ridership/route.ts
 import { NextRequest, NextResponse } from "next/server";
+
 import db from "@/db";
 import { ridershipMetrics } from "@/db/schema";
 
@@ -7,7 +8,7 @@ type RidershipPayload = {
   reportingMonth: string | null; // ISO string from client
 };
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const body = (await req.json()) as RidershipPayload;
     const { reportingMonth } = body;
@@ -24,9 +25,9 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ ok: true });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Error saving ridership metric:", err);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error saving ridership metric:", error);
     return NextResponse.json(
       {
         error: "Internal server error",
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   try {
     const rows = await db
       .select()
@@ -45,9 +46,9 @@ export async function GET() {
       .orderBy(ridershipMetrics.id);
 
     return NextResponse.json(rows);
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Error loading ridership metrics:", err);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error loading ridership metrics:", error);
     return NextResponse.json(
       {
         error: "Failed to load metrics",

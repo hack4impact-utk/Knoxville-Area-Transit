@@ -1,14 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import type { JSX } from "react";
-import Link from "next/link";
-
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import type { Dayjs } from "dayjs";
+import Link from "next/link";
+import type { JSX } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function RidershipPage(): JSX.Element {
   const [reportingMonth, setReportingMonth] = useState<Dayjs | null>(null);
@@ -23,14 +22,14 @@ export default function RidershipPage(): JSX.Element {
 
   const isFormValid = reportingMonth !== null;
 
-  async function loadMetrics() {
+  async function loadMetrics(): Promise<void> {
     try {
       const res = await fetch("/api/ridership");
       if (!res.ok) return;
       const data = await res.json();
       setSavedMetrics(data);
-    } catch (err) {
-      console.error("[Ridership] failed to load metrics", err);
+    } catch (error) {
+      console.error("[Ridership] failed to load metrics", error);
     }
   }
 
@@ -38,7 +37,7 @@ export default function RidershipPage(): JSX.Element {
     void loadMetrics();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     if (!isFormValid) return;
@@ -67,8 +66,8 @@ export default function RidershipPage(): JSX.Element {
 
       setSubmitSuccess(true);
       void loadMetrics();
-    } catch (err) {
-      console.error("[Ridership] network or JS error", err);
+    } catch (error) {
+      console.error("[Ridership] network or JS error", error);
       setSubmitError("Unexpected error while saving ridership metric.");
     } finally {
       setIsSubmitting(false);
@@ -128,7 +127,11 @@ export default function RidershipPage(): JSX.Element {
                 )}
 
                 {submitSuccess && (
-                  <Typography color="success.main" variant="body2" sx={{ mt: 1 }}>
+                  <Typography
+                    color="success.main"
+                    variant="body2"
+                    sx={{ mt: 1 }}
+                  >
                     Saved successfully.
                   </Typography>
                 )}
@@ -146,9 +149,7 @@ export default function RidershipPage(): JSX.Element {
             ) : (
               <Box component="ul" sx={{ pl: 3 }}>
                 {savedMetrics.map((m) => (
-                  <li key={m.id}>
-                    Reporting month: {m.reportingMonth}
-                  </li>
+                  <li key={m.id}>Reporting month: {m.reportingMonth}</li>
                 ))}
               </Box>
             )}

@@ -1,22 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import type { JSX } from "react";
-
-import {
-  Box,
-  Button,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import {
-  LocalizationProvider,
-  DatePicker,
-} from "@mui/x-date-pickers";
+import { Box, Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import type { Dayjs } from "dayjs";
+import type { JSX } from "react";
+import React, { useState } from "react";
 
 const isNonNegative = (value: string): boolean => {
   if (value === "") return true;
@@ -52,7 +41,8 @@ export default function Safety(): JSX.Element {
           </Typography>
 
           <Typography variant="body1" sx={{ mb: 3 }}>
-            Enter monthly Safety metrics for preventable accidents and collisions.
+            Enter monthly Safety metrics for preventable accidents and
+            collisions.
           </Typography>
 
           <Stack spacing={4}>
@@ -62,7 +52,9 @@ export default function Safety(): JSX.Element {
                 label="Reporting Month"
                 views={["year", "month"]}
                 value={reportingMonth}
-                onChange={(newValue) => setReportingMonth(newValue as Dayjs | null)}
+                onChange={(newValue) =>
+                  setReportingMonth(newValue as Dayjs | null)
+                }
                 slotProps={{
                   textField: {
                     fullWidth: true,
@@ -74,7 +66,7 @@ export default function Safety(): JSX.Element {
 
             {/* Preventable Accidents */}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   label="Preventable Accidents — Main Line"
                   type="number"
@@ -93,7 +85,7 @@ export default function Safety(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   label="Preventable Accidents — Lift"
                   type="number"
@@ -115,7 +107,7 @@ export default function Safety(): JSX.Element {
 
             {/* Collisions */}
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   label="Collisions — Main Line"
                   type="number"
@@ -134,7 +126,7 @@ export default function Safety(): JSX.Element {
                 />
               </Grid>
 
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   label="Collisions — Lift"
                   type="number"
@@ -156,7 +148,7 @@ export default function Safety(): JSX.Element {
 
             {/* Notes */}
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <TextField
                   label="Notes"
                   value={notes}

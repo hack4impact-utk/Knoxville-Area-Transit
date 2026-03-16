@@ -1,7 +1,10 @@
 // src/app/api/charters/route.ts
 import { NextRequest, NextResponse } from "next/server";
+
 import db from "@/db";
 import { charterEvents } from "@/db/schema";
+
+type NewCharterEvent = typeof charterEvents.$inferInsert;
 
 type CharterEventPayload = {
   reportingMonth: string | null; // ISO string from client
@@ -15,7 +18,7 @@ type CharterEventPayload = {
   serviceTotal: number | null;
 };
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const body = (await req.json()) as CharterEventPayload;
 
@@ -39,20 +42,23 @@ export async function POST(req: NextRequest) {
     }
 
     await db.insert(charterEvents).values({
-      reportingMonth: new Date(reportingMonth),
+      // Drizzle `date` column expects a string like "YYYY-MM-DD"
+      reportingMonth: new Date(reportingMonth).toISOString().slice(0, 10),
       eventType,
-      eventDate: eventDate ? new Date(eventDate) : null,
+      eventDate: eventDate
+        ? new Date(eventDate).toISOString().slice(0, 10)
+        : null,
       passengerCount,
       vehicleHours,
       vehicleMiles,
       driverAssignments,
       revenueTotal,
       serviceTotal,
-    });
+    } as NewCharterEvent);
 
     return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("Error saving charter event:", err);
+  } catch (error) {
+    console.error("Error saving charter event:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },
@@ -61,7 +67,7 @@ export async function POST(req: NextRequest) {
 }
 
 // NEW: return all saved charter events
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   try {
     const rows = await db
       .select()
@@ -69,8 +75,8 @@ export async function GET() {
       .orderBy(charterEvents.id);
 
     return NextResponse.json(rows);
-  } catch (err) {
-    console.error("Error loading charter events:", err);
+  } catch (error) {
+    console.error("Error loading charter events:", error);
     return NextResponse.json(
       { error: "Failed to load events" },
       { status: 500 },

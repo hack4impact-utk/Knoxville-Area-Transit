@@ -23,13 +23,21 @@ export default function HomePage(): ReactNode {
         </Typography>
 
         <Stack spacing={2}>
-          <Button component={Link} href="/departments/charters" variant="contained">
+          <Button
+            component={Link}
+            href="/departments/charters"
+            variant="contained"
+          >
             Charters
           </Button>
           <Button component={Link} href="/departments/lift" variant="contained">
             Lift
           </Button>
-          <Button component={Link} href="/departments/safety" variant="contained">
+          <Button
+            component={Link}
+            href="/departments/safety"
+            variant="contained"
+          >
             Safety
           </Button>
           <Button
