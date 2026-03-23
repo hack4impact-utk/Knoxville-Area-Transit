@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { JSX } from "react";
 
 import {
@@ -43,10 +43,94 @@ export default function Safety(): JSX.Element {
 
   const [notes, setNotes] = useState<string>("");
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const [savedReports, setSavedReports] = useState<any[]>([]);
+
+  const isPreventableMainValid = isNonNegative(preventableMain);
+  const isPreventableLiftValid = isNonNegative(preventableLift);
+  const isCollisionsMainValid = isNonNegative(collisionsMain);
+  const isCollisionsLiftValid = isNonNegative(collisionsLift);
+
+  const isFormValid =
+    reportingMonth !== null &&
+    isPreventableMainValid &&
+    isPreventableLiftValid &&
+    isCollisionsMainValid &&
+    isCollisionsLiftValid;
+
+  async function loadReports() {
+    try {
+      const res = await fetch("/api/safety");
+      if (!res.ok) return;
+      const data = await res.json();
+      setSavedReports(data);
+    } catch (err) {
+      console.error("[Safety] failed to load reports", err);
+    }
+  }
+
+  useEffect(() => {
+    void loadReports();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!isFormValid) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(false);
+
+    const payload = {
+      reportingMonth: reportingMonth?.toISOString() ?? null,
+      preventableMain: preventableMain ? Number(preventableMain) : null,
+      preventableLift: preventableLift ? Number(preventableLift) : null,
+      collisionsMain: collisionsMain ? Number(collisionsMain) : null,
+      collisionsLift: collisionsLift ? Number(collisionsLift) : null,
+      notes,
+    };
+
+    try {
+      const res = await fetch("/api/safety", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        setSubmitError(`Failed to save safety report: ${text}`);
+        alert("Failed to save safety report.");
+        return;
+      }
+
+      setSubmitSuccess(true);
+      alert("Safety report saved!");
+
+      void loadReports();
+    } catch (err) {
+      console.error("[Safety] network or JS error", err);
+      setSubmitError("Unexpected error while saving safety report.");
+      alert("Unexpected error while saving safety report.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <main>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Box sx={{ p: 4 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ p: 4 }}
+        >
           <Typography variant="h4" gutterBottom>
             Safety – Monthly Report
           </Typography>
@@ -62,7 +146,7 @@ export default function Safety(): JSX.Element {
                 label="Reporting Month"
                 views={["year", "month"]}
                 value={reportingMonth}
-                onChange={(newValue) => setReportingMonth(newValue)}
+                onChange={(newValue) => setReportingMonth(newValue as Dayjs | null)}
                 slotProps={{
                   textField: {
                     fullWidth: true,
@@ -73,108 +157,138 @@ export default function Safety(): JSX.Element {
             </Box>
 
             {/* Preventable Accidents */}
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Preventable Accidents — Main Line"
-                  type="number"
-                  value={preventableMain}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setPreventableMain)
-                  }
-                  error={!isNonNegative(preventableMain)}
-                  helperText={
-                    isNonNegative(preventableMain)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
+              <TextField
+                label="Preventable Accidents — Main Line"
+                type="number"
+                value={preventableMain}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setPreventableMain)
+                }
+                error={!isNonNegative(preventableMain)}
+                helperText={
+                  isNonNegative(preventableMain)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
 
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Preventable Accidents — Lift"
-                  type="number"
-                  value={preventableLift}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setPreventableLift)
-                  }
-                  error={!isNonNegative(preventableLift)}
-                  helperText={
-                    isNonNegative(preventableLift)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-            </Grid>
+              <TextField
+                label="Preventable Accidents — Lift"
+                type="number"
+                value={preventableLift}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setPreventableLift)
+                }
+                error={!isNonNegative(preventableLift)}
+                helperText={
+                  isNonNegative(preventableLift)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Box>
 
             {/* Collisions */}
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Collisions — Main Line"
-                  type="number"
-                  value={collisionsMain}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setCollisionsMain)
-                  }
-                  error={!isNonNegative(collisionsMain)}
-                  helperText={
-                    isNonNegative(collisionsMain)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 3 }}>
+              <TextField
+                label="Collisions — Main Line"
+                type="number"
+                value={collisionsMain}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setCollisionsMain)
+                }
+                error={!isNonNegative(collisionsMain)}
+                helperText={
+                  isNonNegative(collisionsMain)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
 
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="Collisions — Lift"
-                  type="number"
-                  value={collisionsLift}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setCollisionsLift)
-                  }
-                  error={!isNonNegative(collisionsLift)}
-                  helperText={
-                    isNonNegative(collisionsLift)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-            </Grid>
+              <TextField
+                label="Collisions — Lift"
+                type="number"
+                value={collisionsLift}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setCollisionsLift)
+                }
+                error={!isNonNegative(collisionsLift)}
+                helperText={
+                  isNonNegative(collisionsLift)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Box>
 
             {/* Notes */}
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  label="Notes"
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  multiline
-                  minRows={3}
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
+            <Box>
+              <TextField
+                label="Notes"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                multiline
+                minRows={3}
+                fullWidth
+              />
+            </Box>
 
-            {/* Disabled Save Button */}
+            {/* Save Button + Status */}
             <Box sx={{ mt: 2 }}>
-              <Button variant="contained" disabled>
-                Save
+              <Button
+                variant="contained"
+                disabled={!isFormValid || isSubmitting}
+                onClick={handleSubmit}
+              >
+                {isSubmitting ? "Saving..." : "Save"}
               </Button>
+
+              {submitError && (
+                <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+                  {submitError}
+                </Typography>
+              )}
+
+              {submitSuccess && (
+                <Typography color="success.main" variant="body2" sx={{ mt: 1 }}>
+                  Saved successfully.
+                </Typography>
+              )}
             </Box>
           </Stack>
+        </Box>
+
+        {/* Saved Reports section */}
+        <Box sx={{ mt: 6 }}>
+          <Typography variant="h5" gutterBottom>
+            Saved Reports
+          </Typography>
+
+          {savedReports.length === 0 ? (
+            <Typography variant="body2">No reports saved yet.</Typography>
+          ) : (
+            <Box component="ul" sx={{ pl: 3 }}>
+              {savedReports.map((rep: any) => (
+                <li key={rep.id}>
+                  {new Date(rep.reportingMonth).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                  })}{" "}
+                  — preventable: {rep.preventableMain ?? 0}/{rep.preventableLift ?? 0},
+                  collisions: {rep.collisionsMain ?? 0}/{rep.collisionsLift ?? 0}
+                </li>
+              ))}
+            </Box>
+          )}
         </Box>
       </LocalizationProvider>
     </main>
