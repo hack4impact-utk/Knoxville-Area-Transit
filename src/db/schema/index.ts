@@ -112,4 +112,105 @@ import {
       .defaultNow()
       .notNull(),
   });
-  
+
+  /* ======================
+     MAINTENANCE METRICS TABLE
+     ====================== */
+  export const maintenanceMetrics = pgTable("maintenance_metrics", {
+    id: serial("id").primaryKey(),
+
+    reportingMonth: date("reporting_month").notNull(),
+
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  });
+
+  /* ======================
+     LIFT METRICS TABLE
+     ====================== */
+  export const liftMetrics = pgTable("lift_metrics", {
+    id: serial("id").primaryKey(),
+
+    reportingMonth: date("reporting_month").notNull(),
+
+    tripsDenied: integer("trips_denied"),
+    noShows: integer("no_shows"),
+    tripsScheduled: integer("trips_scheduled"),
+    totalPassengers: integer("total_passengers"),
+
+    revenueVehicleMiles: numeric("revenue_vehicle_miles"),
+    revenueVehicleHours: numeric("revenue_vehicle_hours"),
+
+    avgCostPerTrip: numeric("avg_cost_per_trip"),
+    passengerPerMile: numeric("passenger_per_mile"),
+    passengerPerHour: numeric("passenger_per_hour"),
+    otpPercent: numeric("otp_percent"),
+
+    avgWeekdayRidership: numeric("avg_weekday_ridership"),
+    avgSaturdayRidership: numeric("avg_saturday_ridership"),
+    avgSundayRidership: numeric("avg_sunday_ridership"),
+
+    totalWeekdayRidership: numeric("total_weekday_ridership"),
+    totalSaturdayRidership: numeric("total_saturday_ridership"),
+    totalSundayRidership: numeric("total_sunday_ridership"),
+
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  });
+
+  /* ======================
+     SAFETY REPORTS TABLE
+     ====================== */
+  export const safetyReports = pgTable("safety_reports", {
+    id: serial("id").primaryKey(),
+
+    reportingMonth: date("reporting_month").notNull(),
+    preventableMain: integer("preventable_main"),
+    preventableLift: integer("preventable_lift"),
+    collisionsMain: integer("collisions_main"),
+    collisionsLift: integer("collisions_lift"),
+    notes: text("notes"),
+
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  });
+  /* ======================
+     FIXED ROUTE MONTHLY RIDERSHIP TABLE
+     ====================== */
+  export const fixedRouteMonthlyRidership = pgTable("fixed_route_monthly_ridership", {
+    id: serial("id").primaryKey(),
+
+    monthlyReportId: integer("monthly_report_id").notNull(),
+
+    routeNumber: integer("route_number"),
+    routeName: text("route_name"),
+
+    dayType: text("day_type"),
+
+    scheduleId: integer("schedule_id"),
+
+    avgDailyRidershipUpt: integer("avg_daily_ridership_upt"),
+    avgDailyPassMilesPmt: integer("avg_daily_pass_miles_pmt"),
+    avgTripLengthPtl: numeric("avg_trip_length_ptl"),
+
+    sampledTrips: integer("sampled_trips"),
+    scheduledTrips: integer("scheduled_trips"),
+    expansionFactor: numeric("expansion_factor"),
+
+    expandedRidershipUpt: integer("expanded_ridership_upt"),
+    expandedPassMilesPmt: integer("expanded_pass_miles_pmt"),
+
+    expandedRevenueMiles: integer("expanded_revenue_miles"),
+    expandedRevenueHours: numeric("expanded_revenue_hours"),
+
+    dayCount: integer("day_count"),
+
+    monthlyRidershipUpt: integer("monthly_ridership_upt"),
+    monthlyPassMilesPmt: integer("monthly_pass_miles_pmt"),
+
+    monthlyRevenueMiles: integer("monthly_revenue_miles"),
+    monthlyRevenueHours: numeric("monthly_revenue_hours"),
+  });
