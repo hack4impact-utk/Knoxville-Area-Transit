@@ -87,4 +87,29 @@ import {
       .defaultNow()
       .notNull(),
   });
+
+  /* ======================
+     HR METRICS TABLE
+     ====================== */
+  export const hrMetrics = pgTable("hr_metrics", {
+    id: serial("id").primaryKey(),
+
+    reportingMonth: date("reporting_month").notNull(),
+
+    otpWeekday: numeric("otp_weekday"),
+    otpSaturday: numeric("otp_saturday"),
+    otpSunday: numeric("otp_sunday"),
+    otpSystem: numeric("otp_system"),
+
+    peakVehicles: integer("peak_vehicles"),
+    driverHours: numeric("driver_hours"),
+    overtimeHours: numeric("overtime_hours"),
+    absenteeism: numeric("absenteeism"),
+
+    trainingCertifications: text("training_certifications"),
+
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  });
   
