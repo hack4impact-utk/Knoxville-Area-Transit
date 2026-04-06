@@ -1,0 +1,184 @@
+{
+    "reportingMonth": "March 2026",
+    "reportingPeriod": {
+        "startDate": "2025-07-01",
+        "endDate": "2026-03-31",
+        "fyYear": 2026
+    },
+    "sections": [
+        {
+            "sectionId": "ridership",
+            "sectionTitle": "Ridership",
+            "rows": [
+                {
+                    "rowId": "fixed-route",
+                    "label": "Fixed Route",
+                    "thisMonthThisYear": 48250,
+                    "thisMonthLastYear": 45620,
+                    "fytdThisYear": 387400,
+                    "fytdLastYear": 368900,
+                    "percentChange": 5.0
+                },
+                {
+                    "rowId": "demand-response",
+                    "label": "Demand Response",
+                    "thisMonthThisYear": 4120,
+                    "thisMonthLastYear": 3890,
+                    "fytdThisYear": 33100,
+                    "fytdLastYear": 31670,
+                    "percentChange": 4.5
+                },
+                {
+                    "rowId": "charter-service",
+                    "label": "Charter Service",
+                    "thisMonthThisYear": 1240,
+                    "thisMonthLastYear": 1080,
+                    "fytdThisYear": 9340,
+                    "fytdLastYear": 8120,
+                    "percentChange": 15.0
+                },
+                {
+                    "rowId": "total-ridership",
+                    "label": "Total Ridership",
+                    "thisMonthThisYear": 53610,
+                    "thisMonthLastYear": 50590,
+                    "fytdThisYear": 429840,
+                    "fytdLastYear": 408690,
+                    "percentChange": 5.2
+                }
+            ]
+        },
+        {
+            "sectionId": "service",
+            "sectionTitle": "Service Hours & Operations",
+            "rows": [
+                {
+                    "rowId": "service-hours",
+                    "label": "Service Hours Provided",
+                    "thisMonthThisYear": 2450.5,
+                    "thisMonthLastYear": 2410.0,
+                    "fytdThisYear": 19680.25,
+                    "fytdLastYear": 19245.75,
+                    "percentChange": 2.3
+                },
+                {
+                    "rowId": "vehicles-in-service",
+                    "label": "Vehicles In Service (Avg)",
+                    "thisMonthThisYear": 42,
+                    "thisMonthLastYear": 40,
+                    "fytdThisYear": 41.7,
+                    "fytdLastYear": 39.8,
+                    "percentChange": 4.8
+                },
+                {
+                    "rowId": "trips-completed",
+                    "label": "Trips Completed",
+                    "thisMonthThisYear": 12450,
+                    "thisMonthLastYear": 12100,
+                    "fytdThisYear": 99800,
+                    "fytdLastYear": 97300,
+                    "percentChange": 2.6
+                }
+            ]
+        },
+        {
+            "sectionId": "safety",
+            "sectionTitle": "Safety & Incidents",
+            "rows": [
+                {
+                    "rowId": "safety-incidents",
+                    "label": "Safety Incidents Reported",
+                    "thisMonthThisYear": 8,
+                    "thisMonthLastYear": 12,
+                    "fytdThisYear": 28,
+                    "fytdLastYear": 35,
+                    "percentChange": -20.0
+                },
+                {
+                    "rowId": "passenger-injuries",
+                    "label": "Passenger Injuries",
+                    "thisMonthThisYear": 2,
+                    "thisMonthLastYear": 3,
+                    "fytdThisYear": 7,
+                    "fytdLastYear": 10,
+                    "percentChange": -30.0
+                },
+                {
+                    "rowId": "preventable-accidents",
+                    "label": "Preventable Accidents",
+                    "thisMonthThisYear": 1,
+                    "thisMonthLastYear": 2,
+                    "fytdThisYear": 3,
+                    "fytdLastYear": 6,
+                    "percentChange": -50.0
+                }
+            ]
+        },
+        {
+            "sectionId": "maintenance",
+            "sectionTitle": "Maintenance & Fleet Health",
+            "rows": [
+                {
+                    "rowId": "maintenance-costs",
+                    "label": "Maintenance Costs ($)",
+                    "thisMonthThisYear": 48750,
+                    "thisMonthLastYear": 45200,
+                    "fytdThisYear": 389000,
+                    "fytdLastYear": 410500,
+                    "percentChange": -5.2
+                },
+                {
+                    "rowId": "fleet-availability",
+                    "label": "Fleet Availability (%)",
+                    "thisMonthThisYear": 96.5,
+                    "thisMonthLastYear": 95.2,
+                    "fytdThisYear": 96.1,
+                    "fytdLastYear": 94.8,
+                    "percentChange": 1.4
+                },
+                {
+                    "rowId": "preventive-maintenance",
+                    "label": "Preventive Maintenance Actions",
+                    "thisMonthThisYear": 156,
+                    "thisMonthLastYear": 142,
+                    "fytdThisYear": 468,
+                    "fytdLastYear": 425,
+                    "percentChange": 10.1
+                }
+            ]
+        },
+        {
+            "sectionId": "accessibility",
+            "sectionTitle": "Accessibility & ADA",
+            "rows": [
+                {
+                    "rowId": "lift-deployments",
+                    "label": "Lift Deployments",
+                    "thisMonthThisYear": 1840,
+                    "thisMonthLastYear": 1620,
+                    "fytdThisYear": 14720,
+                    "fytdLastYear": 12980,
+                    "percentChange": 13.4
+                },
+                {
+                    "rowId": "lift-failures",
+                    "label": "Lift Failures",
+                    "thisMonthThisYear": 3,
+                    "thisMonthLastYear": 7,
+                    "fytdThisYear": 12,
+                    "fytdLastYear": 21,
+                    "percentChange": -42.9
+                },
+                {
+                    "rowId": "ada-complaints",
+                    "label": "ADA Complaints",
+                    "thisMonthThisYear": 1,
+                    "thisMonthLastYear": 2,
+                    "fytdThisYear": 5,
+                    "fytdLastYear": 8,
+                    "percentChange": -37.5
+                }
+            ]
+        }
+    ]
+}
