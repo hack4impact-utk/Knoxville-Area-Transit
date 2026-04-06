@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "kind": "ridership",
+    "reporting_month": 3,
+    "fiscal_year": 2024
+  },
+  "warnings": ["Route 12 missing data for 03-15"],
+  "data": [
+    { "route": 12, "passengers": 450 },
+    { "route": 14, "passengers": 820 }
+  ]
+}
