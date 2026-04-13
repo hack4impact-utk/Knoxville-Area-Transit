@@ -1,0 +1,34 @@
+{
+  "selectedMonth": "2024-03",
+  "fixedRoutes": [
+    { "routeNumber": "1",  "routeName": "Downtown Circulator",     "passengers": 8420,  "revenueMiles": 3210.5, "revenueHours": 187.0 },
+    { "routeNumber": "2",  "routeName": "North Corridor",          "passengers": 6315,  "revenueMiles": 4870.2, "revenueHours": 243.5 },
+    { "routeNumber": "3",  "routeName": "South Broadway",          "passengers": 5102,  "revenueMiles": 3985.8, "revenueHours": 198.0 },
+    { "routeNumber": "4",  "routeName": "East Magnolia",           "passengers": 4788,  "revenueMiles": 5120.3, "revenueHours": 256.0 },
+    { "routeNumber": "5",  "routeName": "West End Express",        "passengers": 7231,  "revenueMiles": 4410.6, "revenueHours": 220.5 },
+    { "routeNumber": "6",  "routeName": "University Loop",         "passengers": 9874,  "revenueMiles": 2980.4, "revenueHours": 149.0 },
+    { "routeNumber": "7",  "routeName": "Airport Connector",       "passengers": 3560,  "revenueMiles": 6240.0, "revenueHours": 312.0 },
+    { "routeNumber": "8",  "routeName": "Medical District",        "passengers": 4122,  "revenueMiles": 3650.7, "revenueHours": 182.5 },
+    { "routeNumber": "9",  "routeName": "Riverside Route",         "passengers": 3875,  "revenueMiles": 4205.9, "revenueHours": 210.0 },
+    { "routeNumber": "10", "routeName": "Central Business",        "passengers": 6690,  "revenueMiles": 2850.1, "revenueHours": 142.5 },
+    { "routeNumber": "11", "routeName": "Highland Park Shuttle",   "passengers": 2940,  "revenueMiles": 3540.0, "revenueHours": 177.0 },
+    { "routeNumber": "12", "routeName": "Industrial Parkway",      "passengers": 2185,  "revenueMiles": 5610.2, "revenueHours": 280.5 },
+    { "routeNumber": "13", "routeName": "Suburban Link North",     "passengers": 1875,  "revenueMiles": 7120.4, "revenueHours": 356.0 },
+    { "routeNumber": "14", "routeName": "Suburban Link South",     "passengers": 1640,  "revenueMiles": 6890.3, "revenueHours": 344.5 },
+    { "routeNumber": "15", "routeName": "Crosstown Connector",     "passengers": 5330,  "revenueMiles": 4320.8, "revenueHours": 216.0 }
+  ],
+  "lift": {
+    "routeNumber": "LIFT",
+    "routeName": "KAT Lift (ADA Paratransit)",
+    "passengers": 1842,
+    "revenueMiles": 18420.0,
+    "revenueHours": 921.0
+  },
+  "charter": {
+    "routeNumber": "CHR",
+    "routeName": "Charter Services",
+    "passengers": 312,
+    "revenueMiles": 2150.0,
+    "revenueHours": 107.5
+  }
+}
