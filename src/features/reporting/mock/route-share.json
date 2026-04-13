@@ -1,0 +1,21 @@
+[
+  { "routeNumber": 11, "routeName": "Kingston Pike", "totalMonthlyRidership": 42350 },
+  { "routeNumber": 12, "routeName": "Western Avenue", "totalMonthlyRidership": 18720 },
+  { "routeNumber": 13, "routeName": "Beaumont", "totalMonthlyRidership": 12480 },
+  { "routeNumber": 14, "routeName": "Magnolia Avenue", "totalMonthlyRidership": 15390 },
+  { "routeNumber": 17, "routeName": "Sutherland Avenue", "totalMonthlyRidership": 9870 },
+  { "routeNumber": 20, "routeName": "Broadway", "totalMonthlyRidership": 38610, "colorOverride": "#00AA00" },
+  { "routeNumber": 22, "routeName": "Broadway / North", "totalMonthlyRidership": 11230 },
+  { "routeNumber": 30, "routeName": "Chapman Highway", "totalMonthlyRidership": 21540 },
+  { "routeNumber": 33, "routeName": "Burlington", "totalMonthlyRidership": 8710 },
+  { "routeNumber": 34, "routeName": "Vermont Transit", "totalMonthlyRidership": 6490 },
+  { "routeNumber": 40, "routeName": "South Knoxville", "totalMonthlyRidership": 14870 },
+  { "routeNumber": 41, "routeName": "Vestal", "totalMonthlyRidership": 7340 },
+  { "routeNumber": 44, "routeName": "Inskip / Fountain City", "totalMonthlyRidership": 5610 },
+  { "routeNumber": 45, "routeName": "Holston Hills / Chilhowee", "totalMonthlyRidership": 4920 },
+  { "routeNumber": 50, "routeName": "UT / Fort Sanders", "totalMonthlyRidership": 27680 },
+  { "routeNumber": 52, "routeName": "UT / Kingston Pike Express", "totalMonthlyRidership": 16410 },
+  { "routeNumber": 55, "routeName": "Papermill / West Town", "totalMonthlyRidership": 10250 },
+  { "routeNumber": 90, "routeName": "Trolley – Orange Line", "totalMonthlyRidership": 19830 }
+  
+]
