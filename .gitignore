@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local Python venv (manual testing / extractor)
+/.venv/
+
+# system performance irregular extractor — regenerated outputs
+/tools/system_performance_irregular/out*/
