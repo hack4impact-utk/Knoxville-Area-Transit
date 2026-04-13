@@ -45,3 +45,6 @@ next-env.d.ts
 
 # system performance irregular extractor — regenerated outputs
 /tools/system_performance_irregular/out*/
+
+# Python bytecode
+**/__pycache__/
