@@ -1,58 +1,81 @@
 // src/app/api/charters/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/db";
-import { charterEvents } from "@/db/schema";
+import { specialServicesRuns } from "@/db/schema";
 
-type CharterEventPayload = {
-  reportingMonth: string | null; // ISO string from client
-  eventType: string;
-  eventDate: string | null; // ISO string from client
+const VALID_SERVICE_TYPES = [
+  "special_shuttle",
+  "football",
+  "baseball",
+  "basketball",
+  "soccer",
+] as const;
+
+const VALID_LOCATIONS = [
+  "Coliseum (A)",
+  "Old City (D)",
+  "Market Square (E)",
+] as const;
+
+type SpecialServicesPayload = {
+  monthlyReportId: number | null;
+  serviceType: string;
+  eventDate: string | null;
   passengerCount: number | null;
-  vehicleHours: number | null;
-  vehicleMiles: number | null;
-  driverAssignments: string;
-  revenueTotal: number | null;
-  serviceTotal: number | null;
+  revenueMiles: number | null;
+  revenueHours: number | null;
+  eventName: string | null;
+  location: string | null;
 };
 
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as CharterEventPayload;
+    const body = (await req.json()) as SpecialServicesPayload;
 
-    const {
-      reportingMonth,
-      eventType,
-      eventDate,
-      passengerCount,
-      vehicleHours,
-      vehicleMiles,
-      driverAssignments,
-      revenueTotal,
-      serviceTotal,
-    } = body;
-
-    if (!reportingMonth || !eventType) {
+    if (!body.monthlyReportId || !body.serviceType || !body.eventDate) {
       return NextResponse.json(
-        { error: "reportingMonth and eventType are required" },
+        { error: "monthlyReportId, serviceType, and eventDate are required" },
         { status: 400 },
       );
     }
 
-    await db.insert(charterEvents).values({
-      reportingMonth: new Date(reportingMonth),
-      eventType,
-      eventDate: eventDate ? new Date(eventDate) : null,
-      passengerCount,
-      vehicleHours,
-      vehicleMiles,
-      driverAssignments,
-      revenueTotal,
-      serviceTotal,
+    if (
+      !VALID_SERVICE_TYPES.includes(
+        body.serviceType as (typeof VALID_SERVICE_TYPES)[number],
+      )
+    ) {
+      return NextResponse.json(
+        { error: `serviceType must be one of: ${VALID_SERVICE_TYPES.join(", ")}` },
+        { status: 400 },
+      );
+    }
+
+    if (
+      body.location &&
+      !VALID_LOCATIONS.includes(
+        body.location as (typeof VALID_LOCATIONS)[number],
+      )
+    ) {
+      return NextResponse.json(
+        { error: `location must be one of: ${VALID_LOCATIONS.join(", ")}` },
+        { status: 400 },
+      );
+    }
+
+    await db.insert(specialServicesRuns).values({
+      monthlyReportId: body.monthlyReportId,
+      serviceType: body.serviceType,
+      eventDate: body.eventDate.slice(0, 10),
+      passengerCount: body.passengerCount,
+      revenueMiles: body.revenueMiles,
+      revenueHours: body.revenueHours,
+      eventName: body.eventName,
+      location: body.location,
     });
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("Error saving charter event:", err);
+    console.error("Error saving special services run:", err);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },
@@ -60,19 +83,18 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// NEW: return all saved charter events
 export async function GET() {
   try {
     const rows = await db
       .select()
-      .from(charterEvents)
-      .orderBy(charterEvents.id);
+      .from(specialServicesRuns)
+      .orderBy(specialServicesRuns.id);
 
     return NextResponse.json(rows);
   } catch (err) {
-    console.error("Error loading charter events:", err);
+    console.error("Error loading special services runs:", err);
     return NextResponse.json(
-      { error: "Failed to load events" },
+      { error: "Failed to load runs" },
       { status: 500 },
     );
   }

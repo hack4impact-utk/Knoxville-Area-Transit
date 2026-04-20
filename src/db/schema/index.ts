@@ -65,27 +65,21 @@ import {
   });
   
   /* ======================
-     CHARTER EVENTS TABLE
+     SPECIAL SERVICES RUNS TABLE
      ====================== */
-  export const charterEvents = pgTable("charter_events", {
+  export const specialServicesRuns = pgTable("special_services_runs", {
     id: serial("id").primaryKey(),
-  
-    reportingMonth: date("reporting_month").notNull(),
-    eventType: text("event_type").notNull(),
-    eventDate: date("event_date"),
-  
-    passengerCount: integer("passenger_count"),
-    vehicleHours: numeric("vehicle_hours"),
-    vehicleMiles: numeric("vehicle_miles"),
-  
-    driverAssignments: text("driver_assignments"),
-  
-    revenueTotal: numeric("revenue_total"),
-    serviceTotal: numeric("service_total"),
-  
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
+
+    monthlyReportId: integer("monthly_report_id").notNull(),
+    serviceType: text("service_type").notNull(),
+    eventDate: date("event_date").notNull(),
+
+    passengerCount: integer("passenger_count").default(0),
+    revenueMiles: integer("revenue_miles").default(0),
+    revenueHours: integer("revenue_hours").default(0),
+
+    eventName: text("event_name"),
+    location: text("location"),
   });
 
   /* ======================
