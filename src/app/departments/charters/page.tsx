@@ -175,7 +175,7 @@ export default function ChartersPage(): JSX.Element {
             <Stack spacing={4}>
               {/* Monthly Report ID + Service Type + Event Date */}
               <Grid container spacing={3}>
-                <Grid item xs={12} md={3}>
+                <Grid size={{ xs: 12, md: 3 }}>
                   <TextField
                     label="Monthly Report ID"
                     type="number"
@@ -189,7 +189,7 @@ export default function ChartersPage(): JSX.Element {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={3}>
+                <Grid size={{ xs: 12, md: 3 }}>
                   <FormControl fullWidth required>
                     <InputLabel id="service-type-label">
                       Service Type
@@ -209,7 +209,7 @@ export default function ChartersPage(): JSX.Element {
                   </FormControl>
                 </Grid>
 
-                <Grid item xs={12} md={3}>
+                <Grid size={{ xs: 12, md: 3 }}>
                   <DatePicker
                     label="Event Date"
                     value={eventDate}
@@ -223,7 +223,7 @@ export default function ChartersPage(): JSX.Element {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={3}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <FormControl fullWidth>
                     <InputLabel id="location-label">Location</InputLabel>
                     <Select
@@ -245,7 +245,7 @@ export default function ChartersPage(): JSX.Element {
 
               {/* Numeric Fields */}
               <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     label="Passenger Count"
                     type="number"
@@ -263,7 +263,7 @@ export default function ChartersPage(): JSX.Element {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     label="Revenue Miles"
                     type="number"
@@ -281,7 +281,7 @@ export default function ChartersPage(): JSX.Element {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     label="Revenue Hours"
                     type="number"
@@ -303,7 +303,7 @@ export default function ChartersPage(): JSX.Element {
 
               {/* Event Name */}
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     label="Event Name"
                     value={eventName}

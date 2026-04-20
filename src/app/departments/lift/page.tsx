@@ -203,7 +203,7 @@ export default function LiftPage(): JSX.Element {
 
           {/* Trips */}
           <Grid container spacing={3}>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 label="Completed Trips"
                 type="number"
@@ -221,7 +221,7 @@ export default function LiftPage(): JSX.Element {
                 inputProps={{ min: 0 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 label="Trips Scheduled"
                 type="number"
@@ -239,7 +239,7 @@ export default function LiftPage(): JSX.Element {
                 inputProps={{ min: 0 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 label="Trips Denied"
                 type="number"
@@ -257,7 +257,7 @@ export default function LiftPage(): JSX.Element {
                 inputProps={{ min: 0 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 label="Passengers"
                 type="number"
@@ -279,7 +279,7 @@ export default function LiftPage(): JSX.Element {
 
           {/* Revenue Miles / Hours + No-Shows */}
           <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 label="Revenue Miles"
                 type="number"
@@ -297,7 +297,7 @@ export default function LiftPage(): JSX.Element {
                 inputProps={{ min: 0 }}
               />
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 label="Revenue Hours"
                 type="number"
@@ -315,7 +315,7 @@ export default function LiftPage(): JSX.Element {
                 inputProps={{ min: 0 }}
               />
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 label="No-Shows / Cancellations"
                 type="number"
@@ -337,7 +337,7 @@ export default function LiftPage(): JSX.Element {
 
           {/* Ridership + OTP */}
           <Grid container spacing={3}>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 label="Weekday Ridership"
                 type="number"
@@ -355,7 +355,7 @@ export default function LiftPage(): JSX.Element {
                 inputProps={{ min: 0 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 label="Saturday Ridership"
                 type="number"
@@ -373,7 +373,7 @@ export default function LiftPage(): JSX.Element {
                 inputProps={{ min: 0 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
               <TextField
                 label="Sunday Ridership"
                 type="number"
@@ -391,7 +391,7 @@ export default function LiftPage(): JSX.Element {
                 inputProps={{ min: 0 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <TextField
                 label="On-Time Performance %"
                 type="number"
