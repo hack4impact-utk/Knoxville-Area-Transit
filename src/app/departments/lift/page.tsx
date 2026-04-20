@@ -13,9 +13,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import type { Dayjs } from "dayjs";
 
 const isNonNegative = (value: string): boolean => {
   if (value === "") return true;
@@ -40,53 +37,35 @@ const handleNumericChange = (
 
 type LiftMetricsRow = {
   id: number;
-  reportingMonth: string;
-  tripsDenied: number | null;
-  noShows: number | null;
+  monthlyReportId: number;
+  completedTrips: number | null;
   tripsScheduled: number | null;
-  totalPassengers: number | null;
-  revenueVehicleMiles: string | null;
-  revenueVehicleHours: string | null;
-  avgCostPerTrip: string | null;
-  passengerPerMile: string | null;
-  passengerPerHour: string | null;
-  otpPercent: string | null;
-  avgWeekdayRidership: string | null;
-  avgSaturdayRidership: string | null;
-  avgSundayRidership: string | null;
-  totalWeekdayRidership: string | null;
-  totalSaturdayRidership: string | null;
-  totalSundayRidership: string | null;
-  createdAt: string;
+  passengers: number | null;
+  revenueMiles: number | null;
+  revenueHours: number | null;
+  tripsDenied: number | null;
+  noShowsCancellations: number | null;
+  weekdayRidership: number | null;
+  saturdayRidership: number | null;
+  sundayRidership: number | null;
+  onTimePerformancePercent: number | null;
 };
 
 export default function LiftPage(): JSX.Element {
-  const [reportingMonth, setReportingMonth] = useState<Dayjs | null>(null);
+  const [monthlyReportId, setMonthlyReportId] = useState<string>("");
 
-  const [tripsDenied, setTripsDenied] = useState<string>("");
-  const [noShows, setNoShows] = useState<string>("");
+  const [completedTrips, setCompletedTrips] = useState<string>("");
   const [tripsScheduled, setTripsScheduled] = useState<string>("");
-  const [totalPassengers, setTotalPassengers] = useState<string>("");
-
-  const [revenueVehicleMiles, setRevenueVehicleMiles] = useState<string>("");
-  const [revenueVehicleHours, setRevenueVehicleHours] = useState<string>("");
-
-  const [passengerPerMile, setPassengerPerMile] = useState<string>("");
-  const [passengerPerHour, setPassengerPerHour] = useState<string>("");
-
-  const [otpPercent, setOtpPercent] = useState<string>("");
-
-  const [avgWeekdayRidership, setAvgWeekdayRidership] = useState<string>("");
-  const [avgSaturdayRidership, setAvgSaturdayRidership] = useState<string>("");
-  const [avgSundayRidership, setAvgSundayRidership] = useState<string>("");
-
-  const [totalWeekdayRidership, setTotalWeekdayRidership] =
+  const [passengers, setPassengers] = useState<string>("");
+  const [revenueMiles, setRevenueMiles] = useState<string>("");
+  const [revenueHours, setRevenueHours] = useState<string>("");
+  const [tripsDenied, setTripsDenied] = useState<string>("");
+  const [noShowsCancellations, setNoShowsCancellations] = useState<string>("");
+  const [weekdayRidership, setWeekdayRidership] = useState<string>("");
+  const [saturdayRidership, setSaturdayRidership] = useState<string>("");
+  const [sundayRidership, setSundayRidership] = useState<string>("");
+  const [onTimePerformancePercent, setOnTimePerformancePercent] =
     useState<string>("");
-  const [totalSaturdayRidership, setTotalSaturdayRidership] =
-    useState<string>("");
-  const [totalSundayRidership, setTotalSundayRidership] = useState<string>("");
-
-  const [avgCostPerTrip, setAvgCostPerTrip] = useState<string>("");
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -95,23 +74,18 @@ export default function LiftPage(): JSX.Element {
   const [savedMetrics, setSavedMetrics] = useState<LiftMetricsRow[]>([]);
 
   const isFormValid =
-    reportingMonth !== null &&
-    isNonNegative(tripsDenied) &&
-    isNonNegative(noShows) &&
+    monthlyReportId !== "" &&
+    isNonNegative(completedTrips) &&
     isNonNegative(tripsScheduled) &&
-    isNonNegative(totalPassengers) &&
-    isNonNegative(revenueVehicleMiles) &&
-    isNonNegative(revenueVehicleHours) &&
-    isNonNegative(avgCostPerTrip) &&
-    isNonNegative(passengerPerMile) &&
-    isNonNegative(passengerPerHour) &&
-    isPercent(otpPercent) &&
-    isNonNegative(avgWeekdayRidership) &&
-    isNonNegative(avgSaturdayRidership) &&
-    isNonNegative(avgSundayRidership) &&
-    isNonNegative(totalWeekdayRidership) &&
-    isNonNegative(totalSaturdayRidership) &&
-    isNonNegative(totalSundayRidership);
+    isNonNegative(passengers) &&
+    isNonNegative(revenueMiles) &&
+    isNonNegative(revenueHours) &&
+    isNonNegative(tripsDenied) &&
+    isNonNegative(noShowsCancellations) &&
+    isNonNegative(weekdayRidership) &&
+    isNonNegative(saturdayRidership) &&
+    isNonNegative(sundayRidership) &&
+    isPercent(onTimePerformancePercent);
 
   const loadMetrics = async () => {
     try {
@@ -130,29 +104,24 @@ export default function LiftPage(): JSX.Element {
   }, []);
 
   const resetForm = () => {
-    setReportingMonth(null);
-    setTripsDenied("");
-    setNoShows("");
+    setMonthlyReportId("");
+    setCompletedTrips("");
     setTripsScheduled("");
-    setTotalPassengers("");
-    setRevenueVehicleMiles("");
-    setRevenueVehicleHours("");
-    setAvgCostPerTrip("");
-    setPassengerPerMile("");
-    setPassengerPerHour("");
-    setOtpPercent("");
-    setAvgWeekdayRidership("");
-    setAvgSaturdayRidership("");
-    setAvgSundayRidership("");
-    setTotalWeekdayRidership("");
-    setTotalSaturdayRidership("");
-    setTotalSundayRidership("");
+    setPassengers("");
+    setRevenueMiles("");
+    setRevenueHours("");
+    setTripsDenied("");
+    setNoShowsCancellations("");
+    setWeekdayRidership("");
+    setSaturdayRidership("");
+    setSundayRidership("");
+    setOnTimePerformancePercent("");
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!isFormValid || !reportingMonth) return;
+    if (!isFormValid) return;
 
     setIsSubmitting(true);
     setSubmitError(null);
@@ -163,36 +132,29 @@ export default function LiftPage(): JSX.Element {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          reportingMonth: reportingMonth.toISOString(),
+          monthlyReportId: Number(monthlyReportId),
+          completedTrips:
+            completedTrips !== "" ? Number(completedTrips) : null,
+          tripsScheduled:
+            tripsScheduled !== "" ? Number(tripsScheduled) : null,
+          passengers: passengers !== "" ? Number(passengers) : null,
+          revenueMiles: revenueMiles !== "" ? Number(revenueMiles) : null,
+          revenueHours: revenueHours !== "" ? Number(revenueHours) : null,
           tripsDenied: tripsDenied !== "" ? Number(tripsDenied) : null,
-          noShows: noShows !== "" ? Number(noShows) : null,
-          tripsScheduled: tripsScheduled !== "" ? Number(tripsScheduled) : null,
-          totalPassengers:
-            totalPassengers !== "" ? Number(totalPassengers) : null,
-          revenueVehicleMiles:
-            revenueVehicleMiles !== "" ? Number(revenueVehicleMiles) : null,
-          revenueVehicleHours:
-            revenueVehicleHours !== "" ? Number(revenueVehicleHours) : null,
-          avgCostPerTrip: avgCostPerTrip !== "" ? Number(avgCostPerTrip) : null,
-          passengerPerMile:
-            passengerPerMile !== "" ? Number(passengerPerMile) : null,
-          passengerPerHour:
-            passengerPerHour !== "" ? Number(passengerPerHour) : null,
-          otpPercent: otpPercent !== "" ? Number(otpPercent) : null,
-          avgWeekdayRidership:
-            avgWeekdayRidership !== "" ? Number(avgWeekdayRidership) : null,
-          avgSaturdayRidership:
-            avgSaturdayRidership !== "" ? Number(avgSaturdayRidership) : null,
-          avgSundayRidership:
-            avgSundayRidership !== "" ? Number(avgSundayRidership) : null,
-          totalWeekdayRidership:
-            totalWeekdayRidership !== "" ? Number(totalWeekdayRidership) : null,
-          totalSaturdayRidership:
-            totalSaturdayRidership !== ""
-              ? Number(totalSaturdayRidership)
+          noShowsCancellations:
+            noShowsCancellations !== ""
+              ? Number(noShowsCancellations)
               : null,
-          totalSundayRidership:
-            totalSundayRidership !== "" ? Number(totalSundayRidership) : null,
+          weekdayRidership:
+            weekdayRidership !== "" ? Number(weekdayRidership) : null,
+          saturdayRidership:
+            saturdayRidership !== "" ? Number(saturdayRidership) : null,
+          sundayRidership:
+            sundayRidership !== "" ? Number(sundayRidership) : null,
+          onTimePerformancePercent:
+            onTimePerformancePercent !== ""
+              ? Number(onTimePerformancePercent)
+              : null,
         }),
       });
 
@@ -214,402 +176,300 @@ export default function LiftPage(): JSX.Element {
 
   return (
     <main>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Box component="form" onSubmit={handleSubmit} sx={{ p: 4 }}>
-          <Typography variant="h4" gutterBottom>
-            Lift – Monthly Metrics Entry
-          </Typography>
+      <Box component="form" onSubmit={handleSubmit} sx={{ p: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Lift – Monthly Metrics Entry
+        </Typography>
 
-          <Typography variant="body1" sx={{ mb: 3 }}>
-            Enter monthly Lift service metrics
-          </Typography>
+        <Typography variant="body1" sx={{ mb: 3 }}>
+          Enter monthly Lift service metrics
+        </Typography>
 
-          <Stack spacing={4}>
-            {/* Reporting Month */}
-            <Box maxWidth={320}>
-              <DatePicker
-                label="Reporting Month"
-                views={["year", "month"]}
-                value={reportingMonth}
-                onChange={(newValue) => setReportingMonth(newValue)}
-                slotProps={{
-                  textField: {
-                    fullWidth: true,
-                    required: true,
-                  },
-                }}
+        <Stack spacing={4}>
+          {/* Monthly Report ID */}
+          <Box maxWidth={320}>
+            <TextField
+              label="Monthly Report ID"
+              type="number"
+              value={monthlyReportId}
+              onChange={(e) =>
+                handleNumericChange(e.target.value, setMonthlyReportId)
+              }
+              required
+              fullWidth
+              inputProps={{ min: 1 }}
+            />
+          </Box>
+
+          {/* Trips */}
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="Completed Trips"
+                type="number"
+                value={completedTrips}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setCompletedTrips)
+                }
+                error={!isNonNegative(completedTrips)}
+                helperText={
+                  isNonNegative(completedTrips)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
               />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="Trips Scheduled"
+                type="number"
+                value={tripsScheduled}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setTripsScheduled)
+                }
+                error={!isNonNegative(tripsScheduled)}
+                helperText={
+                  isNonNegative(tripsScheduled)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="Trips Denied"
+                type="number"
+                value={tripsDenied}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setTripsDenied)
+                }
+                error={!isNonNegative(tripsDenied)}
+                helperText={
+                  isNonNegative(tripsDenied)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="Passengers"
+                type="number"
+                value={passengers}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setPassengers)
+                }
+                error={!isNonNegative(passengers)}
+                helperText={
+                  isNonNegative(passengers)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
+          </Grid>
+
+          {/* Revenue Miles / Hours + No-Shows */}
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={4}>
+              <TextField
+                label="Revenue Miles"
+                type="number"
+                value={revenueMiles}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setRevenueMiles)
+                }
+                error={!isNonNegative(revenueMiles)}
+                helperText={
+                  isNonNegative(revenueMiles)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <TextField
+                label="Revenue Hours"
+                type="number"
+                value={revenueHours}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setRevenueHours)
+                }
+                error={!isNonNegative(revenueHours)}
+                helperText={
+                  isNonNegative(revenueHours)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <TextField
+                label="No-Shows / Cancellations"
+                type="number"
+                value={noShowsCancellations}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setNoShowsCancellations)
+                }
+                error={!isNonNegative(noShowsCancellations)}
+                helperText={
+                  isNonNegative(noShowsCancellations)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
+          </Grid>
+
+          {/* Ridership + OTP */}
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="Weekday Ridership"
+                type="number"
+                value={weekdayRidership}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setWeekdayRidership)
+                }
+                error={!isNonNegative(weekdayRidership)}
+                helperText={
+                  isNonNegative(weekdayRidership)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="Saturday Ridership"
+                type="number"
+                value={saturdayRidership}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setSaturdayRidership)
+                }
+                error={!isNonNegative(saturdayRidership)}
+                helperText={
+                  isNonNegative(saturdayRidership)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="Sunday Ridership"
+                type="number"
+                value={sundayRidership}
+                onChange={(e) =>
+                  handleNumericChange(e.target.value, setSundayRidership)
+                }
+                error={!isNonNegative(sundayRidership)}
+                helperText={
+                  isNonNegative(sundayRidership)
+                    ? ""
+                    : "Must be a non-negative number."
+                }
+                fullWidth
+                inputProps={{ min: 0 }}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="On-Time Performance %"
+                type="number"
+                value={onTimePerformancePercent}
+                onChange={(e) =>
+                  handleNumericChange(
+                    e.target.value,
+                    setOnTimePerformancePercent,
+                  )
+                }
+                error={!isPercent(onTimePerformancePercent)}
+                helperText={
+                  isPercent(onTimePerformancePercent)
+                    ? ""
+                    : "Must be between 0 and 100."
+                }
+                fullWidth
+                inputProps={{ min: 0, max: 100 }}
+              />
+            </Grid>
+          </Grid>
+
+          {/* Feedback */}
+          {submitSuccess && (
+            <Alert severity="success">Metrics saved successfully!</Alert>
+          )}
+          {submitError && <Alert severity="error">{submitError}</Alert>}
+
+          {/* Save Button */}
+          <Box sx={{ mt: 2 }}>
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={!isFormValid || isSubmitting}
+            >
+              {isSubmitting ? "Saving..." : "Save"}
+            </Button>
+          </Box>
+
+          {/* Saved Entries */}
+          {savedMetrics.length > 0 && (
+            <Box sx={{ mt: 4 }}>
+              <Divider sx={{ mb: 2 }} />
+              <Typography variant="h6" gutterBottom>
+                Saved Entries
+              </Typography>
+              <Stack spacing={2}>
+                {savedMetrics.map((row) => (
+                  <Box
+                    key={row.id}
+                    sx={{
+                      p: 2,
+                      border: "1px solid",
+                      borderColor: "divider",
+                      borderRadius: 1,
+                    }}
+                  >
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      Report #{row.monthlyReportId}
+                    </Typography>
+                    <Typography variant="body2">
+                      Completed: {row.completedTrips ?? "—"} | Scheduled:{" "}
+                      {row.tripsScheduled ?? "—"} | Denied:{" "}
+                      {row.tripsDenied ?? "—"} | Passengers:{" "}
+                      {row.passengers ?? "—"}
+                    </Typography>
+                    <Typography variant="body2">
+                      Miles: {row.revenueMiles ?? "—"} | Hours:{" "}
+                      {row.revenueHours ?? "—"} | OTP:{" "}
+                      {row.onTimePerformancePercent ?? "—"}%
+                    </Typography>
+                  </Box>
+                ))}
+              </Stack>
             </Box>
-
-            {/* Trips + Passengers */}
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Trips Denied"
-                  type="number"
-                  value={tripsDenied}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setTripsDenied)
-                  }
-                  error={!isNonNegative(tripsDenied)}
-                  helperText={
-                    isNonNegative(tripsDenied)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="No-Shows"
-                  type="number"
-                  value={noShows}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setNoShows)
-                  }
-                  error={!isNonNegative(noShows)}
-                  helperText={
-                    isNonNegative(noShows)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Trips Scheduled"
-                  type="number"
-                  value={tripsScheduled}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setTripsScheduled)
-                  }
-                  error={!isNonNegative(tripsScheduled)}
-                  helperText={
-                    isNonNegative(tripsScheduled)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Total Passengers"
-                  type="number"
-                  value={totalPassengers}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setTotalPassengers)
-                  }
-                  error={!isNonNegative(totalPassengers)}
-                  helperText={
-                    isNonNegative(totalPassengers)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-            </Grid>
-
-            {/* Revenue Miles / Hours */}
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Revenue Vehicle Miles"
-                  type="number"
-                  value={revenueVehicleMiles}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setRevenueVehicleMiles)
-                  }
-                  error={!isNonNegative(revenueVehicleMiles)}
-                  helperText={
-                    isNonNegative(revenueVehicleMiles)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Revenue Vehicle Hours"
-                  type="number"
-                  value={revenueVehicleHours}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setRevenueVehicleHours)
-                  }
-                  error={!isNonNegative(revenueVehicleHours)}
-                  helperText={
-                    isNonNegative(revenueVehicleHours)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Average Cost per Trip"
-                  type="number"
-                  value={avgCostPerTrip}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setAvgCostPerTrip)
-                  }
-                  error={!isNonNegative(avgCostPerTrip)}
-                  helperText={
-                    isNonNegative(avgCostPerTrip)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-            </Grid>
-
-            {/* Passenger per Mile / Hour + OTP */}
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Passengers per Mile"
-                  type="number"
-                  value={passengerPerMile}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setPassengerPerMile)
-                  }
-                  error={!isNonNegative(passengerPerMile)}
-                  helperText={
-                    isNonNegative(passengerPerMile)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Passengers per Hour"
-                  type="number"
-                  value={passengerPerHour}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setPassengerPerHour)
-                  }
-                  error={!isNonNegative(passengerPerHour)}
-                  helperText={
-                    isNonNegative(passengerPerHour)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="On-Time Performance %"
-                  type="number"
-                  value={otpPercent}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setOtpPercent)
-                  }
-                  error={!isPercent(otpPercent)}
-                  helperText={
-                    isPercent(otpPercent) ? "" : "Must be between 0 and 100."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0, max: 100 }}
-                />
-              </Grid>
-            </Grid>
-
-            {/* Average Ridership */}
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Avg. Weekday Ridership"
-                  type="number"
-                  value={avgWeekdayRidership}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setAvgWeekdayRidership)
-                  }
-                  error={!isNonNegative(avgWeekdayRidership)}
-                  helperText={
-                    isNonNegative(avgWeekdayRidership)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Avg. Saturday Ridership"
-                  type="number"
-                  value={avgSaturdayRidership}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setAvgSaturdayRidership)
-                  }
-                  error={!isNonNegative(avgSaturdayRidership)}
-                  helperText={
-                    isNonNegative(avgSaturdayRidership)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Avg. Sunday Ridership"
-                  type="number"
-                  value={avgSundayRidership}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setAvgSundayRidership)
-                  }
-                  error={!isNonNegative(avgSundayRidership)}
-                  helperText={
-                    isNonNegative(avgSundayRidership)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-            </Grid>
-
-            {/* Total Ridership */}
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Total Weekday Ridership"
-                  type="number"
-                  value={totalWeekdayRidership}
-                  onChange={(e) =>
-                    handleNumericChange(
-                      e.target.value,
-                      setTotalWeekdayRidership,
-                    )
-                  }
-                  error={!isNonNegative(totalWeekdayRidership)}
-                  helperText={
-                    isNonNegative(totalWeekdayRidership)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Total Saturday Ridership"
-                  type="number"
-                  value={totalSaturdayRidership}
-                  onChange={(e) =>
-                    handleNumericChange(
-                      e.target.value,
-                      setTotalSaturdayRidership,
-                    )
-                  }
-                  error={!isNonNegative(totalSaturdayRidership)}
-                  helperText={
-                    isNonNegative(totalSaturdayRidership)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Total Sunday Ridership"
-                  type="number"
-                  value={totalSundayRidership}
-                  onChange={(e) =>
-                    handleNumericChange(e.target.value, setTotalSundayRidership)
-                  }
-                  error={!isNonNegative(totalSundayRidership)}
-                  helperText={
-                    isNonNegative(totalSundayRidership)
-                      ? ""
-                      : "Must be a non-negative number."
-                  }
-                  fullWidth
-                  inputProps={{ min: 0 }}
-                />
-              </Grid>
-            </Grid>
-
-            {/* Feedback */}
-            {submitSuccess && (
-              <Alert severity="success">Metrics saved successfully!</Alert>
-            )}
-            {submitError && <Alert severity="error">{submitError}</Alert>}
-
-            {/* Save Button */}
-            <Box sx={{ mt: 2 }}>
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={!isFormValid || isSubmitting}
-              >
-                {isSubmitting ? "Saving..." : "Save"}
-              </Button>
-            </Box>
-
-            {/* Saved Entries */}
-            {savedMetrics.length > 0 && (
-              <Box sx={{ mt: 4 }}>
-                <Divider sx={{ mb: 2 }} />
-                <Typography variant="h6" gutterBottom>
-                  Saved Entries
-                </Typography>
-                <Stack spacing={2}>
-                  {savedMetrics.map((row) => (
-                    <Box
-                      key={row.id}
-                      sx={{
-                        p: 2,
-                        border: "1px solid",
-                        borderColor: "divider",
-                        borderRadius: 1,
-                      }}
-                    >
-                      <Typography variant="subtitle1" fontWeight="bold">
-                        {row.reportingMonth}
-                      </Typography>
-                      <Typography variant="body2">
-                        Trips Scheduled: {row.tripsScheduled ?? "—"} | Denied:{" "}
-                        {row.tripsDenied ?? "—"} | No-Shows:{" "}
-                        {row.noShows ?? "—"} | Passengers:{" "}
-                        {row.totalPassengers ?? "—"}
-                      </Typography>
-                      <Typography variant="body2">
-                        Miles: {row.revenueVehicleMiles ?? "—"} | Hours:{" "}
-                        {row.revenueVehicleHours ?? "—"} | OTP:{" "}
-                        {row.otpPercent ?? "—"}%
-                      </Typography>
-                    </Box>
-                  ))}
-                </Stack>
-              </Box>
-            )}
-          </Stack>
-        </Box>
-      </LocalizationProvider>
+          )}
+        </Stack>
+      </Box>
     </main>
   );
 }

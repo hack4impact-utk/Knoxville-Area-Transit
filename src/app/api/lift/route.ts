@@ -4,57 +4,44 @@ import db from "@/db";
 import { liftMetrics } from "@/db/schema";
 
 type LiftMetricsPayload = {
-  reportingMonth: string | null;
-  tripsDenied: number | null;
-  noShows: number | null;
+  monthlyReportId: number | null;
+  completedTrips: number | null;
   tripsScheduled: number | null;
-  totalPassengers: number | null;
-  revenueVehicleMiles: number | null;
-  revenueVehicleHours: number | null;
-  avgCostPerTrip: number | null;
-  passengerPerMile: number | null;
-  passengerPerHour: number | null;
-  otpPercent: number | null;
-  avgWeekdayRidership: number | null;
-  avgSaturdayRidership: number | null;
-  avgSundayRidership: number | null;
-  totalWeekdayRidership: number | null;
-  totalSaturdayRidership: number | null;
-  totalSundayRidership: number | null;
+  passengers: number | null;
+  revenueMiles: number | null;
+  revenueHours: number | null;
+  tripsDenied: number | null;
+  noShowsCancellations: number | null;
+  weekdayRidership: number | null;
+  saturdayRidership: number | null;
+  sundayRidership: number | null;
+  onTimePerformancePercent: number | null;
 };
-
-const toNullableString = (value: number | null): string | null =>
-  value === null ? null : String(value);
 
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json()) as LiftMetricsPayload;
 
-    if (!body.reportingMonth) {
+    if (!body.monthlyReportId) {
       return NextResponse.json(
-        { error: "reportingMonth is required" },
+        { error: "monthlyReportId is required" },
         { status: 400 },
       );
     }
 
     const insertValues: typeof liftMetrics.$inferInsert = {
-      reportingMonth: body.reportingMonth.slice(0, 10),
-      tripsDenied: body.tripsDenied,
-      noShows: body.noShows,
+      monthlyReportId: body.monthlyReportId,
+      completedTrips: body.completedTrips,
       tripsScheduled: body.tripsScheduled,
-      totalPassengers: body.totalPassengers,
-      revenueVehicleMiles: toNullableString(body.revenueVehicleMiles),
-      revenueVehicleHours: toNullableString(body.revenueVehicleHours),
-      avgCostPerTrip: toNullableString(body.avgCostPerTrip),
-      passengerPerMile: toNullableString(body.passengerPerMile),
-      passengerPerHour: toNullableString(body.passengerPerHour),
-      otpPercent: toNullableString(body.otpPercent),
-      avgWeekdayRidership: toNullableString(body.avgWeekdayRidership),
-      avgSaturdayRidership: toNullableString(body.avgSaturdayRidership),
-      avgSundayRidership: toNullableString(body.avgSundayRidership),
-      totalWeekdayRidership: toNullableString(body.totalWeekdayRidership),
-      totalSaturdayRidership: toNullableString(body.totalSaturdayRidership),
-      totalSundayRidership: toNullableString(body.totalSundayRidership),
+      passengers: body.passengers,
+      revenueMiles: body.revenueMiles,
+      revenueHours: body.revenueHours,
+      tripsDenied: body.tripsDenied,
+      noShowsCancellations: body.noShowsCancellations,
+      weekdayRidership: body.weekdayRidership,
+      saturdayRidership: body.saturdayRidership,
+      sundayRidership: body.sundayRidership,
+      onTimePerformancePercent: body.onTimePerformancePercent,
     };
 
     await db.insert(liftMetrics).values(insertValues);
