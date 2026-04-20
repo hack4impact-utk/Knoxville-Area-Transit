@@ -214,3 +214,34 @@ import {
     monthlyRevenueMiles: integer("monthly_revenue_miles"),
     monthlyRevenueHours: numeric("monthly_revenue_hours"),
   });
+
+  /* ======================
+   FIXED ROUTE LINE SUMMARY TABLE
+   ====================== */
+export const fixedRouteLineSummary = pgTable("fixed_route_line_summary", {
+  id: serial("id").primaryKey(),
+
+  monthlyReportId: integer("monthly_report_id").notNull(),
+
+  routeNumber: integer("route_number"),
+
+  dayType: text("day_type"),
+
+  peakVehicles: integer("peak_vehicles"),
+
+  revenueTimeHours: numeric("revenue_time_hours"),
+  nonRevenueTimeHours: numeric("non_revenue_time_hours"),
+  recoveryTimeHours: numeric("recovery_time_hours"),
+
+  revenueDistanceMiles: numeric("revenue_distance_miles"),
+  nonRevenueDistanceMiles: numeric("non_revenue_distance_miles"),
+
+  revenueTrips: integer("revenue_trips"),
+  nonRevenueTrips: integer("non_revenue_trips"),
+
+  totalTimeHours: numeric("total_time_hours"),
+  totalDistanceMiles: numeric("total_distance_miles"),
+});
+
+export type FixedRouteLineSummary = typeof fixedRouteLineSummary.$inferSelect;
+export type NewFixedRouteLineSummary = typeof fixedRouteLineSummary.$inferInsert;
