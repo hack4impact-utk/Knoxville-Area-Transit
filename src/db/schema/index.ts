@@ -89,6 +89,18 @@ import {
   });
 
   /* ======================
+     MONTHLY DEPARTMENT REPORT TABLE
+     ====================== */
+  export const monthlyDepartmentReport = pgTable("monthly_department_report", {
+    // Matches existing UI convention: yyyymm (e.g. 202604)
+    id: integer("id").primaryKey(),
+    reportingMonth: date("reporting_month").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  });
+
+  /* ======================
      HR METRICS TABLE
      ====================== */
   export const hrMetrics = pgTable("hr_metrics", {
@@ -111,6 +123,46 @@ import {
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
+  });
+
+  /* ======================
+     NTD OPERATIONAL METRICS TABLE
+     ====================== */
+  export const ntdOperationalMetrics = pgTable("ntd_operational_metrics", {
+    id: serial("id").primaryKey(),
+
+    monthlyReportId: integer("monthly_report_id")
+      .notNull()
+      .references(() => monthlyDepartmentReport.id, { onDelete: "cascade" }),
+
+    maxMotorBusesInService: integer("max_motor_buses_in_service"),
+    maxLiftVehiclesInService: integer("max_lift_vehicles_in_service"),
+
+    fixedRouteWeekdayAvgRiders: integer("fixed_route_weekday_avg_riders"),
+    fixedRouteWeekdayAvgRevHours: numeric("fixed_route_weekday_avg_rev_hours"),
+    fixedRouteWeekdayAvgRevMiles: numeric("fixed_route_weekday_avg_rev_miles"),
+    fixedRouteSatAvgRiders: integer("fixed_route_sat_avg_riders"),
+    fixedRouteSatAvgRevHours: numeric("fixed_route_sat_avg_rev_hours"),
+    fixedRouteSatAvgRevMiles: numeric("fixed_route_sat_avg_rev_miles"),
+    fixedRouteSunAvgRiders: integer("fixed_route_sun_avg_riders"),
+    fixedRouteSunAvgRevHours: numeric("fixed_route_sun_avg_rev_hours"),
+    fixedRouteSunAvgRevMiles: numeric("fixed_route_sun_avg_rev_miles"),
+
+    demandResponseWeekdayAvgRiders: integer(
+      "demand_response_weekday_avg_riders",
+    ),
+    demandResponseWeekdayAvgRevHours: numeric(
+      "demand_response_weekday_avg_rev_hours",
+    ),
+    demandResponseWeekdayAvgRevMiles: numeric(
+      "demand_response_weekday_avg_rev_miles",
+    ),
+    demandResponseSatAvgRiders: integer("demand_response_sat_avg_riders"),
+    demandResponseSatAvgRevHours: numeric("demand_response_sat_avg_rev_hours"),
+    demandResponseSatAvgRevMiles: numeric("demand_response_sat_avg_rev_miles"),
+    demandResponseSunAvgRiders: integer("demand_response_sun_avg_riders"),
+    demandResponseSunAvgRevHours: numeric("demand_response_sun_avg_rev_hours"),
+    demandResponseSunAvgRevMiles: numeric("demand_response_sun_avg_rev_miles"),
   });
 
   /* ======================

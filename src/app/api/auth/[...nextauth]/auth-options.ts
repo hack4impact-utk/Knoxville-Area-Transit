@@ -5,7 +5,11 @@ import GoogleProvider from "next-auth/providers/google";
 import db from "@/db";
 
 const authOptions: NextAuthOptions = {
-  adapter: DrizzleAdapter(db),
+  ...(db
+    ? {
+        adapter: DrizzleAdapter(db),
+      }
+    : {}),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,

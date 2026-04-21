@@ -16,6 +16,7 @@ const navLinks = [
   { label: "Maintenance", href: "/departments/maintenance" },
   { label: "Safety", href: "/departments/safety" },
   { label: "HR/Operations", href: "/departments/hr" },
+  { label: "NTD Ops", href: "/departments/ntd-operational" },
 ];
 
 export default function AppNavbar(): ReactElement {
