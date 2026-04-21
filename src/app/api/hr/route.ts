@@ -9,7 +9,6 @@ type HrMetricsPayload = {
   otpSaturday: number | null;
   otpSunday: number | null;
   otpSystem: number | null;
-  peakVehicles: number | null;
   driverHours: number | null;
   overtimeHours: number | null;
   absenteeism: number | null;
@@ -21,6 +20,13 @@ const toNullableString = (value: number | null): string | null =>
 
 export async function POST(req: NextRequest) {
   try {
+    if (!db) {
+      return NextResponse.json(
+        { error: "DATABASE_URL is not set" },
+        { status: 500 },
+      );
+    }
+
     const body = (await req.json()) as HrMetricsPayload;
 
     if (!body.reportingMonth) {
@@ -36,7 +42,6 @@ export async function POST(req: NextRequest) {
       otpSaturday: toNullableString(body.otpSaturday),
       otpSunday: toNullableString(body.otpSunday),
       otpSystem: toNullableString(body.otpSystem),
-      peakVehicles: body.peakVehicles,
       driverHours: toNullableString(body.driverHours),
       overtimeHours: toNullableString(body.overtimeHours),
       absenteeism: toNullableString(body.absenteeism),
@@ -57,6 +62,13 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
+    if (!db) {
+      return NextResponse.json(
+        { error: "DATABASE_URL is not set" },
+        { status: 500 },
+      );
+    }
+
     const rows = await db.select().from(hrMetrics).orderBy(hrMetrics.id);
     return NextResponse.json(rows);
   } catch (error) {

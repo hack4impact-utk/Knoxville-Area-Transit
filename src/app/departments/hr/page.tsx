@@ -16,7 +16,6 @@ type HrMetricRow = {
   otpSaturday: string | number | null;
   otpSunday: string | number | null;
   otpSystem: string | number | null;
-  peakVehicles: number | null;
   driverHours: string | number | null;
   overtimeHours: string | number | null;
   absenteeism: string | number | null;
@@ -52,7 +51,6 @@ export default function HRPage(): JSX.Element {
   const [otpSunday, setOtpSunday] = useState("");
   const [otpSystem, setOtpSystem] = useState("");
 
-  const [peakVehicles, setPeakVehicles] = useState("");
   const [driverHours, setDriverHours] = useState("");
   const [overtimeHours, setOvertimeHours] = useState("");
   const [absenteeism, setAbsenteeism] = useState("");
@@ -70,7 +68,6 @@ export default function HRPage(): JSX.Element {
   const isOtpSundayValid = isOtpPercent(otpSunday);
   const isOtpSystemValid = isOtpPercent(otpSystem);
 
-  const isPeakVehiclesValid = isNonNegative(peakVehicles);
   const isDriverHoursValid = isNonNegative(driverHours);
   const isOvertimeHoursValid = isNonNegative(overtimeHours);
   const isAbsenteeismValid = isNonNegative(absenteeism);
@@ -81,7 +78,6 @@ export default function HRPage(): JSX.Element {
     isOtpSaturdayValid &&
     isOtpSundayValid &&
     isOtpSystemValid &&
-    isPeakVehiclesValid &&
     isDriverHoursValid &&
     isOvertimeHoursValid &&
     isAbsenteeismValid;
@@ -116,7 +112,6 @@ export default function HRPage(): JSX.Element {
       otpSaturday: otpSaturday ? Number(otpSaturday) : null,
       otpSunday: otpSunday ? Number(otpSunday) : null,
       otpSystem: otpSystem ? Number(otpSystem) : null,
-      peakVehicles: peakVehicles ? Number(peakVehicles) : null,
       driverHours: driverHours ? Number(driverHours) : null,
       overtimeHours: overtimeHours ? Number(overtimeHours) : null,
       absenteeism: absenteeism ? Number(absenteeism) : null,
@@ -234,19 +229,6 @@ export default function HRPage(): JSX.Element {
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12, md: 3 }}>
                   <TextField
-                    label="Peak Vehicles"
-                    type="number"
-                    value={peakVehicles}
-                    onChange={(e) => handleNumericChange(e.target.value, setPeakVehicles)}
-                    error={!isPeakVehiclesValid}
-                    helperText={isPeakVehiclesValid ? "" : "Must be a non-negative number."}
-                    inputProps={{ min: 0 }}
-                    fullWidth
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 3 }}>
-                  <TextField
                     label="Driver Hours"
                     type="number"
                     value={driverHours}
@@ -333,8 +315,7 @@ export default function HRPage(): JSX.Element {
               <Box component="ul" sx={{ pl: 3 }}>
                 {savedMetrics.map((metric) => (
                   <li key={metric.id}>
-                    {metric.reportingMonth} — OTP System: {metric.otpSystem ?? "N/A"}, Peak
-                    Vehicles: {metric.peakVehicles ?? "N/A"}
+                    {metric.reportingMonth} — OTP System: {metric.otpSystem ?? "N/A"}
                   </li>
                 ))}
               </Box>
