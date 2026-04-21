@@ -10,7 +10,7 @@ import {
     date,
     serial,
   } from "drizzle-orm/pg-core";
-  
+import { relations } from "drizzle-orm";  
   /* ======================
      USERS TABLE
      ====================== */
@@ -163,7 +163,7 @@ import {
   /* ======================
      SAFETY REPORTS TABLE
      ====================== */
-  export const safetyReports = pgTable("safety_reports", {
+  /*export const safetyReports = pgTable("safety_reports", {
     id: serial("id").primaryKey(),
 
     reportingMonth: date("reporting_month").notNull(),
@@ -176,7 +176,47 @@ import {
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
-  });
+  });*/
+
+  /* ======================
+   * MONTHLY DEPARTMENT REPORT
+   * ====================== */
+
+    export const monthlyDepartmentReport = pgTable("monthly_department_report", {
+    id: serial("id").primaryKey(),
+    // Add other existing fields here (e.g., month, year, status)
+    month: text("month").notNull(),
+    year: integer("year").notNull(),
+    });
+
+  /* ======================
+   * SAFETY METRICS
+   * ====================== */
+
+    export const safetyMetrics = pgTable("safety_metrics", {
+    id: serial("id").primaryKey(),
+    monthlyReportId: integer("monthly_report_id")
+    .notNull()
+    .references(() => monthlyDepartmentReport.id),
+    preventableMotorBus: integer("preventable_motor_bus").default(0),
+    preventableLift: integer("preventable_lift").default(0),
+    collisionMotorBus: integer("collision_motor_bus").default(0),
+    collisionLift: integer("collision_lift").default(0),
+    });
+
+  /* =====================
+   * MONTHLY DEPARTMENT REPORT RELATIONS
+   * ===================== */
+    export const monthlyDepartmentReportRelations = relations(monthlyDepartmentReport, ({ many }) => ({
+    safetyMetrics: many(safetyMetrics),
+}));
+
+    export const safetyMetricsRelations = relations(safetyMetrics, ({ one }) => ({
+    monthlyReport: one(monthlyDepartmentReport, {
+    fields: [safetyMetrics.monthlyReportId],
+    references: [monthlyDepartmentReport.id],
+    }),
+    }));
   /* ======================
      FIXED ROUTE MONTHLY RIDERSHIP TABLE
      ====================== */
@@ -214,3 +254,5 @@ import {
     monthlyRevenueMiles: integer("monthly_revenue_miles"),
     monthlyRevenueHours: numeric("monthly_revenue_hours"),
   });
+
+
