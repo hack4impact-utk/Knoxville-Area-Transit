@@ -37,13 +37,19 @@ importers:
         version: 8.10.0(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@mui/material@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mui/system@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@mui/x-date-pickers':
         specifier: ^8.16.0
-        version: 8.16.0(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@mui/material@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mui/system@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(date-fns@4.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 8.16.0(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@mui/material@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mui/system@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(date-fns@4.1.0)(dayjs@1.11.20)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@neondatabase/serverless':
         specifier: ^1.0.1
         version: 1.0.1
+      chart.js:
+        specifier: ^4.5.1
+        version: 4.5.1
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      dayjs:
+        specifier: ^1.11.19
+        version: 1.11.20
       dotenv:
         specifier: ^17.2.1
         version: 17.2.1
@@ -63,7 +69,7 @@ importers:
         specifier: ^10.19.0
         version: 10.20.0
       react:
-        specifier: 19.1.0
+        specifier: ^19.1.0
         version: 19.1.0
       react-dom:
         specifier: 19.1.0
@@ -769,6 +775,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.29':
     resolution: {integrity: sha512-uw6guiW/gcAGPDhLmd77/6lW8QLeiV5RUTsAX46Db6oLhGaVj4lhnPwb184s1bkc8kdVg/+h988dro8GRDpmYQ==}
+
+  '@kurkle/color@0.3.4':
+    resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
 
   '@mui/core-downloads-tracker@7.3.1':
     resolution: {integrity: sha512-+mIK1Z0BhOaQ0vCgOkT1mSrIpEHLo338h4/duuL4TBLXPvUMit732mnwJY3W40Avy30HdeSfwUAAGRkKmwRaEQ==}
@@ -1538,6 +1547,10 @@ packages:
   change-case@5.4.4:
     resolution: {integrity: sha512-HRQyTk2/YPEkt9TnUPbOpr64Uw3KOicFWPVBb+xiHvd6eBx/qPr9xqfBFDT8P2vWsvvz4jbEkfDe71W3VyNu2w==}
 
+  chart.js@4.5.1:
+    resolution: {integrity: sha512-GIjfiT9dbmHRiYi6Nl2yFCq7kkwdkp1W/lp2J99rX0yo9tgJGn3lKQATztIjb5tVtevcBtIdICNWqlq5+E8/Pw==}
+    engines: {pnpm: '>=8'}
+
   ci-info@4.3.0:
     resolution: {integrity: sha512-l+2bNRMiQgcfILUi33labAZYIWlH1kWDp+ecNo5iisRKrbm0xcRyCww71/YU0Fkw0mAFpz9bJayXPjey6vkmaQ==}
     engines: {node: '>=8'}
@@ -1669,6 +1682,9 @@ packages:
 
   date-fns@4.1.0:
     resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+
+  dayjs@1.11.20:
+    resolution: {integrity: sha512-YbwwqR/uYpeoP4pu043q+LTDLFBLApUP6VxRihdfNTqu4ubqMlGDLd6ErXhEgsyvY0K6nCs7nggYumAN+9uEuQ==}
 
   debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
@@ -3693,6 +3709,8 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.4
 
+  '@kurkle/color@0.3.4': {}
+
   '@mui/core-downloads-tracker@7.3.1': {}
 
   '@mui/icons-material@7.3.1(@mui/material@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.9)(react@19.1.0)':
@@ -3827,7 +3845,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
-  '@mui/x-date-pickers@8.16.0(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@mui/material@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mui/system@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(date-fns@4.1.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@mui/x-date-pickers@8.16.0(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@mui/material@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mui/system@7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(date-fns@4.1.0)(dayjs@1.11.20)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@mui/material': 7.3.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -3844,6 +3862,7 @@ snapshots:
       '@emotion/react': 11.14.0(@types/react@19.1.9)(react@19.1.0)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.0))(@types/react@19.1.9)(react@19.1.0)
       date-fns: 4.1.0
+      dayjs: 1.11.20
     transitivePeerDependencies:
       - '@types/react'
 
@@ -4410,6 +4429,10 @@ snapshots:
 
   change-case@5.4.4: {}
 
+  chart.js@4.5.1:
+    dependencies:
+      '@kurkle/color': 0.3.4
+
   ci-info@4.3.0: {}
 
   clean-regexp@1.0.0:
@@ -4543,6 +4566,8 @@ snapshots:
       is-data-view: 1.0.2
 
   date-fns@4.1.0: {}
+
+  dayjs@1.11.20: {}
 
   debug@3.2.7:
     dependencies:
