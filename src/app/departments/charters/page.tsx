@@ -4,8 +4,10 @@ import React, { useEffect, useState } from "react";
 import type { JSX } from "react";
 
 import {
+  Alert,
   Box,
   Button,
+  Divider,
   FormControl,
   InputLabel,
   MenuItem,
@@ -18,6 +20,20 @@ import Grid from "@mui/material/Grid";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import type { Dayjs } from "dayjs";
+
+const SERVICE_TYPES = [
+  { value: "special_shuttle", label: "Special Shuttles Route 70" },
+  { value: "football", label: "Football" },
+  { value: "baseball", label: "Baseball" },
+  { value: "basketball", label: "Basketball" },
+  { value: "soccer", label: "Soccer" },
+] as const;
+
+const LOCATIONS = [
+  "Coliseum (A)",
+  "Old City (D)",
+  "Market Square (E)",
+] as const;
 
 const isNonNegative = (value: string): boolean => {
   if (value === "") return true;
@@ -34,140 +50,170 @@ const handleNumericChange = (
   }
 };
 
+type SpecialServicesRow = {
+  id: number;
+  monthlyReportId: number;
+  serviceType: string;
+  eventDate: string;
+  passengerCount: number | null;
+  revenueMiles: number | null;
+  revenueHours: number | null;
+  eventName: string | null;
+  location: string | null;
+};
+
 export default function ChartersPage(): JSX.Element {
-  const [reportingMonth, setReportingMonth] = useState<Dayjs | null>(null);
-  const [eventType, setEventType] = useState<string>("");
+  const [monthlyReportId, setMonthlyReportId] = useState<string>("");
+  const [serviceType, setServiceType] = useState<string>("");
   const [eventDate, setEventDate] = useState<Dayjs | null>(null);
 
   const [passengerCount, setPassengerCount] = useState<string>("");
-  const [vehicleHours, setVehicleHours] = useState<string>("");
-  const [vehicleMiles, setVehicleMiles] = useState<string>("");
-  const [driverAssignments, setDriverAssignments] = useState<string>("");
-  const [revenueTotal, setRevenueTotal] = useState<string>("");
-  const [serviceTotal, setServiceTotal] = useState<string>("");
+  const [revenueMiles, setRevenueMiles] = useState<string>("");
+  const [revenueHours, setRevenueHours] = useState<string>("");
+  const [eventName, setEventName] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
-  const [savedEvents, setSavedEvents] = useState<any[]>([]);
-
-  const isEventDateRequired = eventType !== "";
-  const isEventDateValid = isEventDateRequired ? eventDate !== null : true;
-
-  const isPassengerCountValid = isNonNegative(passengerCount);
-  const isVehicleHoursValid = isNonNegative(vehicleHours);
-  const isVehicleMilesValid = isNonNegative(vehicleMiles);
-  const isRevenueTotalValid = isNonNegative(revenueTotal);
-  const isServiceTotalValid = isNonNegative(serviceTotal);
+  const [savedRuns, setSavedRuns] = useState<SpecialServicesRow[]>([]);
 
   const isFormValid =
-    reportingMonth !== null &&
-    eventType !== "" &&
-    isEventDateValid &&
-    isPassengerCountValid &&
-    isVehicleHoursValid &&
-    isVehicleMilesValid &&
-    isRevenueTotalValid &&
-    isServiceTotalValid;
+    monthlyReportId !== "" &&
+    serviceType !== "" &&
+    eventDate !== null &&
+    isNonNegative(passengerCount) &&
+    isNonNegative(revenueMiles) &&
+    isNonNegative(revenueHours);
 
-  async function loadEvents() {
+  async function loadRuns() {
     try {
       const res = await fetch("/api/charters");
       if (!res.ok) return;
-      const data = await res.json();
-      setSavedEvents(data);
+      const data = (await res.json()) as SpecialServicesRow[];
+      setSavedRuns(data);
     } catch (err) {
-      console.error("[Charters] failed to load events", err);
+      console.error("[Charters] failed to load runs", err);
     }
   }
 
   useEffect(() => {
-    void loadEvents();
+    void loadRuns();
   }, []);
+
+  const resetForm = () => {
+    setServiceType("");
+    setEventDate(null);
+    setPassengerCount("");
+    setRevenueMiles("");
+    setRevenueHours("");
+    setEventName("");
+    setLocation("");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log("[Charters] submit clicked");
-
-    if (!isFormValid) {
-      console.log("[Charters] form invalid");
-      return;
-    }
+    if (!isFormValid) return;
 
     setIsSubmitting(true);
     setSubmitError(null);
     setSubmitSuccess(false);
 
-    const payload = {
-      reportingMonth: reportingMonth?.toISOString() ?? null,
-      eventType,
-      eventDate: eventDate?.toISOString() ?? null,
-      passengerCount: passengerCount ? Number(passengerCount) : null,
-      vehicleHours: vehicleHours ? Number(vehicleHours) : null,
-      vehicleMiles: vehicleMiles ? Number(vehicleMiles) : null,
-      driverAssignments,
-      revenueTotal: revenueTotal ? Number(revenueTotal) : null,
-      serviceTotal: serviceTotal ? Number(serviceTotal) : null,
-    };
-
-    console.log("[Charters] payload", payload);
-
     try {
       const res = await fetch("/api/charters", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          monthlyReportId: Number(monthlyReportId),
+          serviceType,
+          eventDate: eventDate?.format("YYYY-MM-DD") ?? null,
+          passengerCount: passengerCount ? Number(passengerCount) : null,
+          revenueMiles: revenueMiles ? Number(revenueMiles) : null,
+          revenueHours: revenueHours ? Number(revenueHours) : null,
+          eventName: eventName || null,
+          location: location || null,
+        }),
       });
 
-      console.log("[Charters] response status", res.status);
-
-      const text = await res.text();
-      console.log("[Charters] response body", text);
-
       if (!res.ok) {
-        setSubmitError(`Failed to save charter event: ${text}`);
-        alert("Failed to save charter event.");
-        return;
+        const data = (await res.json()) as { error?: string };
+        setSubmitError(data.error ?? "An error occurred.");
+      } else {
+        setSubmitSuccess(true);
+        resetForm();
+        await loadRuns();
       }
-
-      setSubmitSuccess(true);
-      alert("Charter event saved!");
-
-      // Refresh list of saved events for the demo
-      void loadEvents();
     } catch (err) {
-      console.error("[Charters] network or JS error", err);
-      setSubmitError("Unexpected error while saving charter event.");
-      alert("Unexpected error while saving charter event.");
+      console.error(err);
+      setSubmitError("Network error. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const groupedRuns = SERVICE_TYPES.map(({ value, label }) => ({
+    label,
+    serviceType: value,
+    rows: savedRuns.filter((r) => r.serviceType === value),
+  }));
 
   return (
     <main>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box sx={{ p: 4 }}>
           <Typography variant="h4" gutterBottom>
-            Charters – Event Entry Form
+            Special Services – Run Entry
           </Typography>
 
           <Typography variant="body1" sx={{ mb: 3 }}>
-            Enter charter event metrics for the selected reporting month.
+            Enter special service runs (shuttles, football, baseball,
+            basketball, soccer).
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit}>
             <Stack spacing={4}>
-              {/* Top row: Reporting Month, Event Type, Event Date */}
+              {/* Monthly Report ID + Service Type + Event Date */}
               <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 3 }}>
+                  <TextField
+                    label="Monthly Report ID"
+                    type="number"
+                    value={monthlyReportId}
+                    onChange={(e) =>
+                      handleNumericChange(e.target.value, setMonthlyReportId)
+                    }
+                    required
+                    fullWidth
+                    inputProps={{ min: 1 }}
+                  />
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 3 }}>
+                  <FormControl fullWidth required>
+                    <InputLabel id="service-type-label">
+                      Service Type
+                    </InputLabel>
+                    <Select
+                      labelId="service-type-label"
+                      label="Service Type"
+                      value={serviceType}
+                      onChange={(e) => setServiceType(e.target.value)}
+                    >
+                      {SERVICE_TYPES.map((st) => (
+                        <MenuItem key={st.value} value={st.value}>
+                          {st.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 3 }}>
                   <DatePicker
-                    label="Reporting Month"
-                    views={["year", "month"]}
-                    value={reportingMonth}
-                    onChange={(newValue) => setReportingMonth(newValue)}
+                    label="Event Date"
+                    value={eventDate}
+                    onChange={(newValue) => setEventDate(newValue)}
                     slotProps={{
                       textField: {
                         fullWidth: true,
@@ -177,46 +223,29 @@ export default function ChartersPage(): JSX.Element {
                   />
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <FormControl fullWidth>
-                    <InputLabel id="event-type-label">Event Type</InputLabel>
+                    <InputLabel id="location-label">Location</InputLabel>
                     <Select
-                      labelId="event-type-label"
-                      label="Event Type"
-                      value={eventType}
-                      onChange={(e) => setEventType(e.target.value)}
+                      labelId="location-label"
+                      label="Location"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
                     >
-                      <MenuItem value="UT Football">UT Football</MenuItem>
-                      <MenuItem value="Basketball">Basketball</MenuItem>
-                      <MenuItem value="Baseball">Baseball</MenuItem>
-                      <MenuItem value="Soccer">Soccer</MenuItem>
-                      <MenuItem value="Other">Other</MenuItem>
+                      <MenuItem value="">None</MenuItem>
+                      {LOCATIONS.map((loc) => (
+                        <MenuItem key={loc} value={loc}>
+                          {loc}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>
-
-                <Grid item xs={12} md={4}>
-                  <DatePicker
-                    label="Event Date"
-                    value={eventDate}
-                    onChange={(newValue) => setEventDate(newValue)}
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        error: isEventDateRequired && !eventDate,
-                        helperText:
-                          isEventDateRequired && !eventDate
-                            ? "Event Date is required when Event Type is selected."
-                            : "",
-                      },
-                    }}
-                  />
-                </Grid>
               </Grid>
 
-              {/* Numeric Fields: Passenger Count, Vehicle Hours, Vehicle Miles */}
+              {/* Numeric Fields */}
               <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
                     label="Passenger Count"
                     type="number"
@@ -224,9 +253,9 @@ export default function ChartersPage(): JSX.Element {
                     onChange={(e) =>
                       handleNumericChange(e.target.value, setPassengerCount)
                     }
-                    error={!isPassengerCountValid}
+                    error={!isNonNegative(passengerCount)}
                     helperText={
-                      isPassengerCountValid
+                      isNonNegative(passengerCount)
                         ? ""
                         : "Must be a non-negative number."
                     }
@@ -234,18 +263,17 @@ export default function ChartersPage(): JSX.Element {
                     fullWidth
                   />
                 </Grid>
-
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
-                    label="Vehicle Hours"
+                    label="Revenue Miles"
                     type="number"
-                    value={vehicleHours}
+                    value={revenueMiles}
                     onChange={(e) =>
-                      handleNumericChange(e.target.value, setVehicleHours)
+                      handleNumericChange(e.target.value, setRevenueMiles)
                     }
-                    error={!isVehicleHoursValid}
+                    error={!isNonNegative(revenueMiles)}
                     helperText={
-                      isVehicleHoursValid
+                      isNonNegative(revenueMiles)
                         ? ""
                         : "Must be a non-negative number."
                     }
@@ -253,18 +281,17 @@ export default function ChartersPage(): JSX.Element {
                     fullWidth
                   />
                 </Grid>
-
-                <Grid item xs={12} md={4}>
+                <Grid size={{ xs: 12, md: 4 }}>
                   <TextField
-                    label="Vehicle Miles"
+                    label="Revenue Hours"
                     type="number"
-                    value={vehicleMiles}
+                    value={revenueHours}
                     onChange={(e) =>
-                      handleNumericChange(e.target.value, setVehicleMiles)
+                      handleNumericChange(e.target.value, setRevenueHours)
                     }
-                    error={!isVehicleMilesValid}
+                    error={!isNonNegative(revenueHours)}
                     helperText={
-                      isVehicleMilesValid
+                      isNonNegative(revenueHours)
                         ? ""
                         : "Must be a non-negative number."
                     }
@@ -274,62 +301,25 @@ export default function ChartersPage(): JSX.Element {
                 </Grid>
               </Grid>
 
-              {/* Driver Assignments */}
+              {/* Event Name */}
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
-                    label="Driver Assignments"
-                    value={driverAssignments}
-                    onChange={(e) => setDriverAssignments(e.target.value)}
-                    multiline
-                    minRows={3}
+                    label="Event Name"
+                    value={eventName}
+                    onChange={(e) => setEventName(e.target.value)}
                     fullWidth
                   />
                 </Grid>
               </Grid>
 
-              {/* Revenue & Service Totals */}
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    label="Revenue Total"
-                    type="number"
-                    value={revenueTotal}
-                    onChange={(e) =>
-                      handleNumericChange(e.target.value, setRevenueTotal)
-                    }
-                    error={!isRevenueTotalValid}
-                    helperText={
-                      isRevenueTotalValid
-                        ? ""
-                        : "Must be a non-negative number."
-                    }
-                    inputProps={{ min: 0 }}
-                    fullWidth
-                  />
-                </Grid>
+              {/* Feedback */}
+              {submitSuccess && (
+                <Alert severity="success">Run saved successfully!</Alert>
+              )}
+              {submitError && <Alert severity="error">{submitError}</Alert>}
 
-                <Grid item xs={12} md={6}>
-                  <TextField
-                    label="Service Total"
-                    type="number"
-                    value={serviceTotal}
-                    onChange={(e) =>
-                      handleNumericChange(e.target.value, setServiceTotal)
-                    }
-                    error={!isServiceTotalValid}
-                    helperText={
-                      isServiceTotalValid
-                        ? ""
-                        : "Must be a non-negative number."
-                    }
-                    inputProps={{ min: 0 }}
-                    fullWidth
-                  />
-                </Grid>
-              </Grid>
-
-              {/* Save Button + Status */}
+              {/* Save Button */}
               <Box>
                 <Button
                   type="submit"
@@ -338,42 +328,40 @@ export default function ChartersPage(): JSX.Element {
                 >
                   {isSubmitting ? "Saving..." : "Save"}
                 </Button>
-
-                {submitError && (
-                  <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-                    {submitError}
-                  </Typography>
-                )}
-
-                {submitSuccess && (
-                  <Typography color="success.main" variant="body2" sx={{ mt: 1 }}>
-                    Saved successfully.
-                  </Typography>
-                )}
               </Box>
             </Stack>
           </Box>
 
-          {/* Saved Events (very simple demo view) */}
+          {/* Saved Runs grouped by service type */}
           <Box sx={{ mt: 6 }}>
+            <Divider sx={{ mb: 2 }} />
             <Typography variant="h5" gutterBottom>
-              Saved Events
+              Saved Runs
             </Typography>
 
-            {savedEvents.length === 0 ? (
-              <Typography variant="body2">
-                No events saved yet.
-              </Typography>
-            ) : (
-              <Box component="ul" sx={{ pl: 3 }}>
-                {savedEvents.map((evt: any) => (
-                  <li key={evt.id}>
-                    {evt.eventType} — {evt.passengerCount ?? 0} passengers,{" "}
-                    {evt.vehicleHours ?? 0} hours, {evt.vehicleMiles ?? 0} miles
-                  </li>
-                ))}
+            {groupedRuns.map((group) => (
+              <Box key={group.serviceType} sx={{ mb: 3 }}>
+                <Typography variant="h6">{group.label}</Typography>
+                {group.rows.length === 0 ? (
+                  <Typography variant="body2" sx={{ ml: 2 }}>
+                    No runs saved yet.
+                  </Typography>
+                ) : (
+                  <Box component="ul" sx={{ pl: 3 }}>
+                    {group.rows.map((row) => (
+                      <li key={row.id}>
+                        {row.eventDate}
+                        {row.eventName ? ` — ${row.eventName}` : ""} |{" "}
+                        Passengers: {row.passengerCount ?? 0} | Miles:{" "}
+                        {row.revenueMiles ?? 0} | Hours:{" "}
+                        {row.revenueHours ?? 0}
+                        {row.location ? ` | Location: ${row.location}` : ""}
+                      </li>
+                    ))}
+                  </Box>
+                )}
               </Box>
-            )}
+            ))}
           </Box>
         </Box>
       </LocalizationProvider>

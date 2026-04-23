@@ -65,27 +65,21 @@ import {
   });
   
   /* ======================
-     CHARTER EVENTS TABLE
+     SPECIAL SERVICES RUNS TABLE
      ====================== */
-  export const charterEvents = pgTable("charter_events", {
+  export const specialServicesRuns = pgTable("special_services_runs", {
     id: serial("id").primaryKey(),
-  
-    reportingMonth: date("reporting_month").notNull(),
-    eventType: text("event_type").notNull(),
-    eventDate: date("event_date"),
-  
-    passengerCount: integer("passenger_count"),
-    vehicleHours: numeric("vehicle_hours"),
-    vehicleMiles: numeric("vehicle_miles"),
-  
-    driverAssignments: text("driver_assignments"),
-  
-    revenueTotal: numeric("revenue_total"),
-    serviceTotal: numeric("service_total"),
-  
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
+
+    monthlyReportId: integer("monthly_report_id").notNull(),
+    serviceType: text("service_type").notNull(),
+    eventDate: date("event_date").notNull(),
+
+    passengerCount: integer("passenger_count").default(0),
+    revenueMiles: integer("revenue_miles").default(0),
+    revenueHours: integer("revenue_hours").default(0),
+
+    eventName: text("event_name"),
+    location: text("location"),
   });
 
   /* ======================
@@ -132,32 +126,19 @@ import {
   export const liftMetrics = pgTable("lift_metrics", {
     id: serial("id").primaryKey(),
 
-    reportingMonth: date("reporting_month").notNull(),
+    monthlyReportId: integer("monthly_report_id").notNull().unique(),
 
-    tripsDenied: integer("trips_denied"),
-    noShows: integer("no_shows"),
-    tripsScheduled: integer("trips_scheduled"),
-    totalPassengers: integer("total_passengers"),
-
-    revenueVehicleMiles: numeric("revenue_vehicle_miles"),
-    revenueVehicleHours: numeric("revenue_vehicle_hours"),
-
-    avgCostPerTrip: numeric("avg_cost_per_trip"),
-    passengerPerMile: numeric("passenger_per_mile"),
-    passengerPerHour: numeric("passenger_per_hour"),
-    otpPercent: numeric("otp_percent"),
-
-    avgWeekdayRidership: numeric("avg_weekday_ridership"),
-    avgSaturdayRidership: numeric("avg_saturday_ridership"),
-    avgSundayRidership: numeric("avg_sunday_ridership"),
-
-    totalWeekdayRidership: numeric("total_weekday_ridership"),
-    totalSaturdayRidership: numeric("total_saturday_ridership"),
-    totalSundayRidership: numeric("total_sunday_ridership"),
-
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .defaultNow()
-      .notNull(),
+    completedTrips: integer("completed_trips").default(0),
+    tripsScheduled: integer("trips_scheduled").default(0),
+    passengers: integer("passengers").default(0),
+    revenueMiles: integer("revenue_miles").default(0),
+    revenueHours: integer("revenue_hours").default(0),
+    tripsDenied: integer("trips_denied").default(0),
+    noShowsCancellations: integer("no_shows_cancellations").default(0),
+    weekdayRidership: integer("weekday_ridership").default(0),
+    saturdayRidership: integer("saturday_ridership").default(0),
+    sundayRidership: integer("sunday_ridership").default(0),
+    onTimePerformancePercent: integer("on_time_performance_percent"),
   });
 
   /* ======================
