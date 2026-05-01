@@ -214,3 +214,15 @@ import {
     monthlyRevenueMiles: integer("monthly_revenue_miles"),
     monthlyRevenueHours: numeric("monthly_revenue_hours"),
   });
+
+
+  export const financeMetrics = pgTable("finance_metrics", {
+    id: serial("id").primaryKey(),
+    monthlyReportId: integer("monthly_report_id").notNull().unique(),
+    fixedRouteRevenue: integer("fixed_route_revenue"),
+    liftRevenue: integer("lift_revenue"),
+    footballShuttleRevenue: integer("football_shuttle_revenue"),
+    boydsSoccerRevenue: integer("boyds_soccer_revenue"),
+    boydsBaseballRevenue: integer("boyds_baseball_revenue"),
+    otherCharterRevenue: integer("other_charter_revenue"),
+  });
