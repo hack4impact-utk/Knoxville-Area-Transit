@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   TextField,
@@ -21,14 +21,16 @@ export default function Maintenance() {
     dayjs()
   );
   const [values, setValues] = useState({
-    motorBusMajor: "",
-    motorBusOther: "",
-    liftMajor: "",
-    liftOther: "",
-    interruptions: "",
-    diesel: "",
-    cng: "",
-    electric: "",
+    motorBusMajorRoadCalls: "",
+    motorBusOtherRoadCalls: "",
+    liftMajorRoadCalls: "",
+    liftOtherRoadCalls: "",
+    busDieselGallons: "",
+    busGasolineGallons: "",
+    ebKwhCharging: "",
+    ebKwhPropulsion: "",
+    liftDieselGallons: "",
+    liftGasolineGallons: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,6 +43,8 @@ export default function Maintenance() {
     }
   };
 
+  const toInt = (v: string) => (v ? parseInt(v, 10) : 0);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitError(null);
@@ -51,6 +55,9 @@ export default function Maintenance() {
       return;
     }
 
+    const monthlyReportId =
+      reportingMonth.year() * 100 + (reportingMonth.month() + 1);
+
     setIsSubmitting(true);
 
     try {
@@ -58,25 +65,17 @@ export default function Maintenance() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          reportingMonth: reportingMonth.toISOString(),
-          motorBusMajor: values.motorBusMajor
-            ? parseInt(values.motorBusMajor, 10)
-            : null,
-          motorBusOther: values.motorBusOther
-            ? parseInt(values.motorBusOther, 10)
-            : null,
-          liftMajor: values.liftMajor
-            ? parseInt(values.liftMajor, 10)
-            : null,
-          liftOther: values.liftOther
-            ? parseInt(values.liftOther, 10)
-            : null,
-          interruptions: values.interruptions
-            ? parseInt(values.interruptions, 10)
-            : null,
-          diesel: values.diesel ? parseInt(values.diesel, 10) : null,
-          cng: values.cng ? parseInt(values.cng, 10) : null,
-          electric: values.electric ? parseInt(values.electric, 10) : null,
+          monthlyReportId,
+          motorBusMajorRoadCalls: toInt(values.motorBusMajorRoadCalls),
+          motorBusOtherRoadCalls: toInt(values.motorBusOtherRoadCalls),
+          liftMajorRoadCalls: toInt(values.liftMajorRoadCalls),
+          liftOtherRoadCalls: toInt(values.liftOtherRoadCalls),
+          busDieselGallons: toInt(values.busDieselGallons),
+          busGasolineGallons: toInt(values.busGasolineGallons),
+          ebKwhCharging: toInt(values.ebKwhCharging),
+          ebKwhPropulsion: toInt(values.ebKwhPropulsion),
+          liftDieselGallons: toInt(values.liftDieselGallons),
+          liftGasolineGallons: toInt(values.liftGasolineGallons),
         }),
       });
 
@@ -87,18 +86,19 @@ export default function Maintenance() {
 
       setSubmitSuccess(true);
       setValues({
-        motorBusMajor: "",
-        motorBusOther: "",
-        liftMajor: "",
-        liftOther: "",
-        interruptions: "",
-        diesel: "",
-        cng: "",
-        electric: "",
+        motorBusMajorRoadCalls: "",
+        motorBusOtherRoadCalls: "",
+        liftMajorRoadCalls: "",
+        liftOtherRoadCalls: "",
+        busDieselGallons: "",
+        busGasolineGallons: "",
+        ebKwhCharging: "",
+        ebKwhPropulsion: "",
+        liftDieselGallons: "",
+        liftGasolineGallons: "",
       });
       setReportingMonth(dayjs());
 
-      // Clear success message after 3 seconds
       setTimeout(() => setSubmitSuccess(false), 3000);
     } catch (err) {
       const errorMessage =
@@ -144,7 +144,6 @@ export default function Maintenance() {
 
             <form onSubmit={handleSubmit}>
               <Stack spacing={3}>
-                {/* Reporting Month */}
                 <Box maxWidth={400}>
                   <DatePicker
                     views={["year", "month"]}
@@ -159,7 +158,6 @@ export default function Maintenance() {
                   />
                 </Box>
 
-                {/* Road Calls Section */}
                 <Box>
                   <Typography variant="h6" gutterBottom>
                     Road Calls
@@ -168,88 +166,120 @@ export default function Maintenance() {
                     <TextField
                       label="Motor Bus — Major"
                       type="number"
-                      value={values.motorBusMajor}
+                      value={values.motorBusMajorRoadCalls}
                       onChange={(e) =>
-                        handleChange("motorBusMajor", e.target.value)
+                        handleChange("motorBusMajorRoadCalls", e.target.value)
                       }
                       inputProps={{ min: 0 }}
                     />
                     <TextField
                       label="Motor Bus — Other"
                       type="number"
-                      value={values.motorBusOther}
+                      value={values.motorBusOtherRoadCalls}
                       onChange={(e) =>
-                        handleChange("motorBusOther", e.target.value)
+                        handleChange("motorBusOtherRoadCalls", e.target.value)
                       }
                       inputProps={{ min: 0 }}
                     />
                     <TextField
                       label="Lift — Major"
                       type="number"
-                      value={values.liftMajor}
-                      onChange={(e) => handleChange("liftMajor", e.target.value)}
+                      value={values.liftMajorRoadCalls}
+                      onChange={(e) =>
+                        handleChange("liftMajorRoadCalls", e.target.value)
+                      }
                       inputProps={{ min: 0 }}
                     />
                     <TextField
                       label="Lift — Other"
                       type="number"
-                      value={values.liftOther}
-                      onChange={(e) => handleChange("liftOther", e.target.value)}
-                      inputProps={{ min: 0 }}
-                    />
-                  </Box>
-                </Box>
-
-                {/* Service Interruptions */}
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    Service Interruptions
-                  </Typography>
-                  <Box maxWidth={300}>
-                    <TextField
-                      label="Service Interruptions"
-                      type="number"
-                      value={values.interruptions}
+                      value={values.liftOtherRoadCalls}
                       onChange={(e) =>
-                        handleChange("interruptions", e.target.value)
+                        handleChange("liftOtherRoadCalls", e.target.value)
                       }
                       inputProps={{ min: 0 }}
-                      fullWidth
                     />
                   </Box>
                 </Box>
 
-                {/* Fuel / Energy Consumption */}
                 <Box>
                   <Typography variant="h6" gutterBottom>
-                    Fuel / Energy Consumption
+                    Bus Fuel
                   </Typography>
                   <Box display="flex" flexWrap="wrap" gap={2}>
                     <TextField
-                      label="Diesel (gal)"
+                      label="Bus Diesel (gal)"
                       type="number"
-                      value={values.diesel}
-                      onChange={(e) => handleChange("diesel", e.target.value)}
+                      value={values.busDieselGallons}
+                      onChange={(e) =>
+                        handleChange("busDieselGallons", e.target.value)
+                      }
                       inputProps={{ min: 0 }}
                     />
                     <TextField
-                      label="CNG (GGE)"
+                      label="Bus Gasoline (gal)"
                       type="number"
-                      value={values.cng}
-                      onChange={(e) => handleChange("cng", e.target.value)}
-                      inputProps={{ min: 0 }}
-                    />
-                    <TextField
-                      label="Electric (kWh)"
-                      type="number"
-                      value={values.electric}
-                      onChange={(e) => handleChange("electric", e.target.value)}
+                      value={values.busGasolineGallons}
+                      onChange={(e) =>
+                        handleChange("busGasolineGallons", e.target.value)
+                      }
                       inputProps={{ min: 0 }}
                     />
                   </Box>
                 </Box>
 
-                {/* Save Button */}
+                <Box>
+                  <Typography variant="h6" gutterBottom>
+                    Electric Bus Energy
+                  </Typography>
+                  <Box display="flex" flexWrap="wrap" gap={2}>
+                    <TextField
+                      label="EB kWh — Charging"
+                      type="number"
+                      value={values.ebKwhCharging}
+                      onChange={(e) =>
+                        handleChange("ebKwhCharging", e.target.value)
+                      }
+                      inputProps={{ min: 0 }}
+                    />
+                    <TextField
+                      label="EB kWh — Propulsion"
+                      type="number"
+                      value={values.ebKwhPropulsion}
+                      onChange={(e) =>
+                        handleChange("ebKwhPropulsion", e.target.value)
+                      }
+                      inputProps={{ min: 0 }}
+                    />
+                  </Box>
+                </Box>
+
+                <Box>
+                  <Typography variant="h6" gutterBottom>
+                    Lift Fuel
+                  </Typography>
+                  <Box display="flex" flexWrap="wrap" gap={2}>
+                    <TextField
+                      label="Lift Diesel (gal)"
+                      type="number"
+                      value={values.liftDieselGallons}
+                      onChange={(e) =>
+                        handleChange("liftDieselGallons", e.target.value)
+                      }
+                      inputProps={{ min: 0 }}
+                    />
+                    <TextField
+                      label="Lift Gasoline (gal)"
+                      type="number"
+                      value={values.liftGasolineGallons}
+                      onChange={(e) =>
+                        handleChange("liftGasolineGallons", e.target.value)
+                      }
+                      inputProps={{ min: 0 }}
+                    />
+                  </Box>
+                </Box>
+
                 <Box>
                   <Button
                     type="submit"
@@ -275,4 +305,3 @@ export default function Maintenance() {
     </main>
   );
 }
-

@@ -119,7 +119,19 @@ import {
   export const maintenanceMetrics = pgTable("maintenance_metrics", {
     id: serial("id").primaryKey(),
 
-    reportingMonth: date("reporting_month").notNull(),
+    monthlyReportId: integer("monthly_report_id").notNull(),
+
+    motorBusMajorRoadCalls: integer("motor_bus_major_road_calls").default(0),
+    motorBusOtherRoadCalls: integer("motor_bus_other_road_calls").default(0),
+    liftMajorRoadCalls: integer("lift_major_road_calls").default(0),
+    liftOtherRoadCalls: integer("lift_other_road_calls").default(0),
+
+    busDieselGallons: integer("bus_diesel_gallons").default(0),
+    busGasolineGallons: integer("bus_gasoline_gallons").default(0),
+    ebKwhCharging: integer("eb_kwh_charging").default(0),
+    ebKwhPropulsion: integer("eb_kwh_propulsion").default(0),
+    liftDieselGallons: integer("lift_diesel_gallons").default(0),
+    liftGasolineGallons: integer("lift_gasoline_gallons").default(0),
 
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
